@@ -5203,7 +5203,7 @@ selector();
             $np = getNucleusPatchLevel();
             echo "<table>\n";
             echo "\t<tr>";
-            echo "\t\t" . '<th colspan="2">Nucleus CMS' . "</th>\n";
+            echo "\t\t" . '<th colspan="2">LMNucleus CMS' . "</th>\n";
             echo "\t</tr><tr>\n";
             echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION . "</td>\n";
             echo "\t\t" . '<td>' . $nv . "</td>\n";
@@ -5233,6 +5233,8 @@ selector();
             echo "</table>\n";
 
             // Link to the online version test at the Nucleus CMS website
+/*
+// Commented out version check as there are no version check for LMNucleus CMS.
             echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK . "</h3>\n";
             if ($nucleus['codename'] != '') {
                 $codenamestring = ' &quot;' . $nucleus['codename'] . '&quot;';
@@ -5244,6 +5246,7 @@ selector();
             echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">';
             echo 'Nucleus CMS ' . $nv . $codenamestring;
             echo '</a>';
+*/
         //echo '<br />';
         }
         else {
@@ -5353,16 +5356,21 @@ selector();
             $codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
 
             if ($member->isLoggedIn() && $member->isAdmin()) {
+                echo '<a href="http://nucleus.slightlysome.net">LMNucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
+/*
+// Commented out as there is no version check available for LMNucleus CMS
                 $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
-                echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
+                echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">LMNucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
+                echo '<a href="http://nucleus.slightlysome.net">LMNucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
                 $newestVersion = getLatestVersion();
                 $newestCompare = str_replace('/','.',$newestVersion);
                 $currentVersion = str_replace(array('/','v'),array('.',''),$nucleus['version']);
                 if ($newestVersion && version_compare($newestCompare,$currentVersion) > 0) {
                     echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
                 }
+*/
             } else {
-                echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
+                echo 'LMNucleus CMS ' . $nucleus['version'] . $codenamestring;
             }
             echo ')';
         echo '</div>';
@@ -5392,6 +5400,8 @@ selector();
                 <a href="<?php echo _ADMINPAGEFOOT_OFFICIALURL ?>">Nucleus CMS</a> &copy; 2002-<?php echo date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT; ?>
                 -
                 <a href="<?php echo _ADMINPAGEFOOT_DONATEURL ?>"><?php echo _ADMINPAGEFOOT_DONATE ?></a>
+				-
+                <a href="http://nucleus.slightlysome.net">LMNucleus CMS</a> additions by Leo (www.slightlysome.net)
             </div>
 
             </div><!-- content -->

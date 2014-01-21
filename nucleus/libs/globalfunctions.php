@@ -20,7 +20,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.65.01';
+$nucleus['version'] = 'v3.66';
 $nucleus['codename'] = '';
 
 // check and die if someone is trying to override internal globals (when register_globals turn on)
@@ -124,7 +124,7 @@ $special      = requestVar('special');
 $virtualpath  = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
 if (!headers_sent() ) {
-    header('Generator: Nucleus CMS ' . $nucleus['version']);
+    header('Generator: LMNucleus CMS ' . $nucleus['version']);
 }
 
 // include core classes that are needed for login & plugin handling
@@ -569,7 +569,7 @@ function intCookieVar($name) {
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-    return 365;
+    return 366;
 }
 
 /**
@@ -588,6 +588,9 @@ function getNucleusPatchLevel() {
  * e.g. 3.41 or 3.41/02
  */
 function getLatestVersion() {
+	return false;
+/*	
+// Commented out as there is no version check for LMNucleus CMS
     if (!function_exists('curl_init')) return false;
     $crl = curl_init();
     $timeout = 5;
@@ -597,7 +600,7 @@ function getLatestVersion() {
     $ret = curl_exec($crl);
     curl_close($crl);
     return $ret;
-
+*/
 }
 
 /**
@@ -1370,8 +1373,8 @@ function helplink($id) {
 
 function getMailFooter() {
     $message = "\n\n-----------------------------";
-    $message .=  "\n   Powered by Nucleus CMS";
-    $message .=  "\n(http://www.nucleuscms.org/)";
+    $message .=  "\n   Powered by LMNucleus CMS";
+    $message .=  "\n(http://nucleus.slightlysome.net)";
     return $message;
 }
 

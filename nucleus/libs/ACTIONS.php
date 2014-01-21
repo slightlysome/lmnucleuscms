@@ -1391,7 +1391,7 @@ class ACTIONS extends BaseActions {
 	 */
 	function parse_version() {
 		global $nucleus;
-		echo 'Nucleus CMS ' . $nucleus['version'];
+		echo 'LMNucleus CMS ' . $nucleus['version'];
 	}
 	
 	/**
