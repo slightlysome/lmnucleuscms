@@ -381,7 +381,7 @@ $language = getLanguageName();
 # original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
 # important note that '\' must be matched with '\\\\' in preg* expressions
 
-include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
+include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
 
 /*
     Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
@@ -780,7 +780,7 @@ function parseHighlight($query) {
     // TODO: add more intelligent splitting logic
 
     // get rid of quotes
-    $query = preg_replace('/\'|"/', '', $query);
+    $query = str_replace(array("'",'/'), '', $query);
 
     if (!$query) {
         return array();
@@ -1312,7 +1312,7 @@ function selectLanguage($language) {
 	# original ereg_replace: preg_replace( '@\\|/@', '', $language) . '.php')
 	# important note that '\' must be matched with '\\\\' in preg* expressions
 
-	include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
+	include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
 
 }
 
@@ -1445,7 +1445,7 @@ function checkLanguage($lang) {
 	# original ereg_replace: ereg_replace( '[\\|/]', '', $lang) . '.php')
 	# important note that '\' must be matched with '\\\\' in preg* expressions
 
-	return file_exists($DIR_LANG . preg_replace('#[\\\\|/]#', '', $lang) . '.php');
+	return file_exists($DIR_LANG . str_replace(array('\\','/'), '', $lang) . '.php');
 
 }
 
@@ -1462,7 +1462,7 @@ function checkPlugin($plug) {
 	# original ereg_replace: ereg_replace( '[\\|/]', '', $plug) . '.php')
 	# important note that '\' must be matched with '\\\\' in preg* expressions
 
-	return file_exists($DIR_PLUGINS . preg_replace('#[\\\\|/]#', '', $plug) . '.php');
+	return file_exists($DIR_PLUGINS . str_replace(array('\\','/'), '', $plug) . '.php');
 
 }
 
@@ -1947,7 +1947,7 @@ function ticketForPlugin() {
 			# original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
 			# important note that '\' must be matched with '\\\\' in preg* expressions
 
-			include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
+			include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
 			include($DIR_LIBS . 'PLUGINADMIN.php');
 		}
 
