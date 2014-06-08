@@ -2315,9 +2315,22 @@ class ADMIN {
 
             <table><tr>
                 <td><?php echo _TEAM_CHOOSEMEMBER?></td>
-                <td><?php                   // TODO: try to make it so only non-team-members are listed
-                    $query =  'SELECT mname as text, mnumber as value'
-                           . ' FROM '.sql_table('member');
+                <td><?php
+                /*
+                 * Lord Matt: Edited to address issue: "try to make it so only 
+                 * non-team-members are listed". This edit is theory only until 
+                 * tested. 99% certain I have this correct.
+                 */
+                    $query =  'SELECT mname as text, mnumber as value' .
+                             ' FROM ' .
+                            sql_table('member') . 
+                             ' WHERE mnumber '.
+                             ' NOT IN (SELECT tmember from ' .
+                             sql_table('team') .
+                             ' WHERE tblog=' . 
+                            $blogid .
+                            ');';
+                               
 
                     $template['name'] = 'memberid';
                     $template['tabindex'] = 10000;
