@@ -6635,9 +6635,20 @@ selector();
 
     }
 
+
     /**
      * Helper functions to create option forms etc.
-     * @todo document parameters
+     * 
+     * @TODO: Continue to document params
+     * 
+     * @param type $name
+     * @param type $checkedval
+     * @param type $tabindex (optional)
+     * @param type $value1   (optional)
+     * @param type $value2   (optional)
+     * @param type $yesval   (optional)
+     * @param type $noval    (optional)
+     * @param type $isAdmin  (optional)
      */
     function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0) {
         $id = htmlspecialchars($name,ENT_QUOTES,_CHARSET);
