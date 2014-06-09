@@ -19,7 +19,7 @@
 
 header('Pragma: no-cache');
 
-$CONF = array();
+$CONF = array(); // ideally Global Vars and defaults should init in just one location
 $CONF['Self'] = 'atom.php';
 
 include('./config.php');

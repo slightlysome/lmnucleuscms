@@ -64,7 +64,7 @@
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
-$CONF = array();
+$CONF = array(); // ideally Global Vars and defaults should init in just one location
 $DIR_LIBS = '';
 require("../../config.php");	// include Nucleus libs and code
 //include($DIR_LIBS . "xmlrpc.inc.php");

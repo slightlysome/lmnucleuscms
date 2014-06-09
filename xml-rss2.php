@@ -20,7 +20,7 @@
 
 header('Pragma: no-cache');
 
-$CONF = array();
+$CONF = array(); // ideally Global Vars and defaults should init in just one location
 $CONF['Self'] = 'xml-rss2.php';
 
 include('./config.php');

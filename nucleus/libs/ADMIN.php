@@ -22,7 +22,8 @@ if ( !function_exists('requestVar') ) exit;
 require_once dirname(__FILE__) . '/showlist.php';
 
 /**
- * Builds the admin area and executes admin actions
+ * Builds the admin area and executes admin actions calledby index.php from the 
+ * nucleus folder.
  */
 class ADMIN {
 

@@ -15,9 +15,9 @@
  * @version $Id$
  */
 	// we are using admin stuff:
-	$CONF = array();
+	$CONF = array(); // ideally Global Vars and defaults should init in just one location
 	$CONF['UsingAdminArea'] = 1;
-
+        $CONF['debug'] = 0;
 	// include the admin code
 	require_once('../config.php');
 

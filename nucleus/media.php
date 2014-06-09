@@ -25,7 +25,7 @@
  *
  */
 
-$CONF = array();
+$CONF = array(); // ideally Global Vars and defaults should init in just one location
 
 // defines how much media items will be shown per page. You can override this
 // in config.php if you like. (changing it in config.php instead of here will

@@ -19,7 +19,7 @@
  */
 
 // bookmarklet is part of admin area (might need XML-RPC)
-$CONF = array();
+$CONF = array(); // ideally Global Vars and defaults should init in just one location
 $CONF['UsingAdminArea'] = 1;
 
 // include all classes and config data
