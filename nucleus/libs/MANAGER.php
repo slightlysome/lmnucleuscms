@@ -61,8 +61,9 @@ class MANAGER {
 	  * does not yet exists. Users should use this function as
 	  * $manager =& MANAGER::instance(); to get a reference to the object
 	  * instead of a copy
+	  * @static
 	  */
-	function &instance() {
+	public static function &instance() {
 		static $instance = array();
 		if (empty($instance)) {
 			$instance[0] = new MANAGER();

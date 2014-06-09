@@ -114,7 +114,7 @@ class SKIN {
 	 * @return int number of skins with the given ID
 	 * @static
 	 */
-	function exists($name) {
+	public static function exists($name) {
 		return quickQuery('select count(*) as result FROM '.sql_table('skin_desc').' WHERE sdname="'.sql_real_escape_string($name).'"') > 0;
 	}
 
@@ -124,7 +124,7 @@ class SKIN {
 	 * @return int number of skins with the given ID
 	 * @static
 	 */
-	function existsID($id) {
+	public static function existsID($id) {
 		return quickQuery('select COUNT(*) as result FROM '.sql_table('skin_desc').' WHERE sdnumber='.intval($id)) > 0;
 	}
 
@@ -134,7 +134,7 @@ class SKIN {
 	 * @return object SKIN
 	 * @static
 	 */
-	function createFromName($name) {
+	public static function createFromName($name) {
 		return new SKIN(SKIN::getIdFromName($name));
 	}
 
@@ -144,7 +144,7 @@ class SKIN {
 	 * @return int Skin ID
 	 * @static
 	 */
-	function getIdFromName($name) {
+	public static function getIdFromName($name) {
 		$query =  'SELECT sdnumber'
 			   . ' FROM '.sql_table('skin_desc')
 			   . ' WHERE sdname="'.sql_real_escape_string($name).'"';
@@ -159,7 +159,7 @@ class SKIN {
 	 * @return string Skin short name
 	 * @static
 	 */
-	function getNameFromId($id) {
+	public static function getNameFromId($id) {
 		return quickQuery('SELECT sdname as result FROM '.sql_table('skin_desc').' WHERE sdnumber=' . intval($id));
 	}
 
@@ -168,7 +168,7 @@ class SKIN {
 	 *
 	 * @static
 	 */
-	function createNew($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
+	public static function createNew($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
 		global $manager;
 
 		$data = array(
@@ -314,10 +314,10 @@ class SKIN {
 	/**
 	 * Get an array with the names of possible skin parts
 	 * Used to show all possible parts of a skin in the administration backend
-	 * 
-	 * static: returns an array of friendly names
+	 * returns an array of friendly names
+	 * @static
 	 */
-	function getFriendlyNames() {
+	public static function getFriendlyNames() {
 		$skintypes = array(
 			'index' => _SKIN_PART_MAIN,
 			'item' => _SKIN_PART_ITEM,
@@ -343,8 +343,9 @@ class SKIN {
 	 * returns an array with the allowed actions
 	 * 
 	 * @param $type type of the skin (e.g. index, item, search ...)
+	 * @static
 	 */
-	function getAllowedActionsForType($type) {
+	public static function getAllowedActionsForType($type) {
 		global $blogid;
 
 		// some actions that can be performed at any time, from anywhere

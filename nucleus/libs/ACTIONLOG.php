@@ -25,9 +25,10 @@ $CONF['LogLevel'] = INFO;
 class ACTIONLOG {
 
 	/**
-	  * (Static) Method to add a message to the action log
-	  */
-	function add($level, $message) {
+	 * Method to add a message to the action log
+	 * @static
+	 */
+	public static function add($level, $message) {
 		global $member, $CONF;
 
 		if ($CONF['LogLevel'] < $level)
@@ -46,9 +47,10 @@ class ACTIONLOG {
 	}
 
 	/**
-	  * (Static) Method to clear the whole action log
-	  */
-	function clear() {
+	 * Method to clear the whole action log
+	 * @static
+	 */
+	public static function clear() {
 		global $manager;
 
 		$query = 'DELETE FROM ' . sql_table('actionlog');
@@ -60,9 +62,10 @@ class ACTIONLOG {
 	}
 
 	/**
-	  * (Static) Method to trim the action log (from over 500 back to 250 entries)
-	  */
-	function trimLog() {
+	 * Method to trim the action log (from over 500 back to 250 entries)
+	 * @static
+	 */
+	public static function trimLog() {
 		static $checked = 0;
 
 		// only check once per run

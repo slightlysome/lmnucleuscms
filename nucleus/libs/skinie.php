@@ -426,9 +426,10 @@ class SKINIMPORT {
 	}
 
 	/**
-	 * Static method that looks for importable XML files in subdirs of the given dir
+	 * method that looks for importable XML files in subdirs of the given dir
+	 * @static
 	 */
-	function searchForCandidates($dir) {
+	public static function searchForCandidates($dir) {
 		$candidates = array();
 
 		$dirhandle = opendir($dir);

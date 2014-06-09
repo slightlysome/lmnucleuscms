@@ -812,8 +812,9 @@ class BLOG {
 	  * Shows a list of all blogs in the system using a given template
 	  * ordered by number, name, shortname or description
 	  * in ascending or descending order
+	  * @static
 	  */
-	function showBlogList($template, $bnametype, $orderby, $direction) {
+	public static function showBlogList($template, $bnametype, $orderby, $direction) {
 		global $CONF, $manager;
 
 		switch ($orderby) {
@@ -1271,24 +1272,26 @@ class BLOG {
 
 	/**
 	  * Checks if a blog with a given shortname exists 
-	  * Returns true if there is a blog with the given shortname (static)
+	  * Returns true if there is a blog with the given shortname
 	  * 
 	  * @param $name
 	  * 	blog shortname
+	  * @static
 	  */
-	function exists($name) {
+	public static function exists($name) {
 		$r = sql_query('select * FROM '.sql_table('blog').' WHERE bshortname="'.sql_real_escape_string($name).'"');
 		return (sql_num_rows($r) != 0);
 	}
 
 	/**
 	  * Checks if a blog with a given id exists 
-	  * Returns true if there is a blog with the given ID (static)
+	  * Returns true if there is a blog with the given ID
 	  * 
 	  * @param $id
 	  * 	blog id
+	  * @static
 	  */
-	function existsID($id) {
+	public static function existsID($id) {
 		$r = sql_query('select * FROM '.sql_table('blog').' WHERE bnumber='.intval($id));
 		return (sql_num_rows($r) != 0);
 	}

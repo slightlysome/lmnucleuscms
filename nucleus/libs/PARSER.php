@@ -130,8 +130,9 @@ class PARSER {
 	 * 
 	 * @param $property additional parser property (e.g. include prefix of the skin)
 	 * @param $value new value
+	 * @static
 	 */
-	function setProperty($property, $value) {
+	public static function setProperty($property, $value) {
 		global $manager;
 		$manager->setParserProperty($property, $value);
 	}
@@ -140,8 +141,9 @@ class PARSER {
 	 * Get a property of the parser from the manager
 	 * 
 	 * @param $name name of the property
+	 * @static
 	 */
-	function getProperty($name) {
+	public static function getProperty($name) {
 		global $manager;
 		return $manager->getParserProperty($name);
 	}

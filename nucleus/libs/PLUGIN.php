@@ -544,9 +544,9 @@
 		 * Deletes all option values for a given context and contextid
 		 * (used when e.g. a blog, member or category is deleted)
 		 *
-		 * (static method)
+		 * @static
 		 */
-		function _deleteOptionValues($context, $contextid) {
+		public static function _deleteOptionValues($context, $contextid) {
 			// delete all associated plugin options
 			$aOIDs = array();
 				// find ids
@@ -569,7 +569,7 @@
 		 * @author TeRanEX
 		 * @static
 		 */
-		function getOptionMeta($typeExtra) {
+		public static function getOptionMeta($typeExtra) {
 			$tmpMeta = explode(';', $typeExtra);
 			$meta = array();
 			for ($i = 0; $i < count($tmpMeta); $i++) {
@@ -589,8 +589,9 @@
 		 * @param string $typeExtra the value of the typeExtra field of an option
 		 * @return string the selectlist
 		 * @author TeRanEX
+		 * @static
 		 */
-		function getOptionSelectValues($typeExtra) {
+		public static function getOptionSelectValues($typeExtra) {
 			$meta = NucleusPlugin::getOptionMeta($typeExtra);
 			//the select list must always be the first part
 			return $meta['select'];
@@ -626,7 +627,7 @@
 		 *        formcontrols into the page (by ex: itemOptions for new item)
 		 * @static
 		 */
-		function _applyPluginOptions(&$aOptions, $newContextid = 0) {
+		public static function _applyPluginOptions(&$aOptions, $newContextid = 0) {
 			global $manager;
 			if (!is_array($aOptions)) return;
 

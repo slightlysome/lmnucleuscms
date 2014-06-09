@@ -549,7 +549,7 @@ class ADMIN {
             // perform action, display errors if needed
             switch($action) {
                 case 'delete':
-                    $error = $this->deleteOneMember($memberid);
+					$error = ADMIN::deleteOneMember($memberid);
                     break;
                 case 'setadmin':
                     // always succeeds
@@ -734,7 +734,7 @@ class ADMIN {
                     echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
 
                 // show blog/category selection list
-                $this->selectBlogCategory('destcatid');
+				ADMIN::selectBlogCategory('destcatid');
 
             ?>
 
@@ -767,7 +767,7 @@ class ADMIN {
                     echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
 
                 // show blog/category selection list
-                $this->selectBlog('destblogid');
+				ADMIN::selectBlog('destblogid');
 
             ?>
 
@@ -823,8 +823,9 @@ class ADMIN {
      * Inserts a HTML select element with choices for all categories to which the current
      * member has access
      * @see function selectBlog
+	 * @static
      */
-    function selectBlogCategory($name, $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
+	public static function selectBlogCategory($name, $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
         ADMIN::selectBlog($name, 'category', $selected, $tabindex, $showNewCat, $iForcedBlogInclude);
     }
 
@@ -837,8 +838,9 @@ class ADMIN {
      *      ID of a blog that always needs to be included, without checking if the
      *      member is on the blog team (-1 = none)
      * @todo document parameters
+	 * @static
      */
-    function selectBlog($name, $mode='blog', $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
+	public static function selectBlog($name, $mode='blog', $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
         global $member, $CONF;
 
         // 0. get IDs of blogs to which member can post items (+ forced blog)
@@ -1387,7 +1389,7 @@ class ADMIN {
                 <?php
 
                     $manager->addTicketHidden();
-                    $this->selectBlogCategory('catid',$item['catid'],10,1);
+					ADMIN::selectBlogCategory('catid',$item['catid'],10,1);
                 ?>
 
                 <input type="submit" value="<?php echo _MOVE_BTN?>" tabindex="10000" onclick="return checkSubmit();" />
@@ -1766,10 +1768,10 @@ class ADMIN {
                 <td><input name="url" tabindex="10050" size="40" maxlength="100" /></td>
             </tr><tr>
                 <td><?php echo _MEMBERS_SUPERADMIN?> <?php help('superadmin'); ?></td>
-                <td><?php $this->input_yesno('admin',0,10060); ?> </td>
+				<td><?php ADMIN::input_yesno('admin',0,10060); ?> </td>
             </tr><tr>
                 <td><?php echo _MEMBERS_CANLOGIN?> <?php help('canlogin'); ?></td>
-                <td><?php $this->input_yesno('canlogin',1,10070); ?></td>
+				<td><?php ADMIN::input_yesno('canlogin',1,10070); ?></td>
             </tr><tr>
                 <td><?php echo _MEMBERS_NOTES?></td>
                 <td><input name="notes" maxlength="100" size="40" tabindex="10080" /></td>
@@ -1861,10 +1863,10 @@ class ADMIN {
         ?>
             </tr><tr>
                 <td><?php echo _MEMBERS_SUPERADMIN?> <?php help('superadmin'); ?></td>
-                <td><?php $this->input_yesno('admin',$mem->isAdmin(),60); ?></td>
+				<td><?php ADMIN::input_yesno('admin',$mem->isAdmin(),60); ?></td>
             </tr><tr>
                 <td><?php echo _MEMBERS_CANLOGIN?> <?php help('canlogin'); ?></td>
-                <td><?php $this->input_yesno('canlogin',$mem->canLogin(),70,1,0,_YES,_NO,$mem->isAdmin()); ?></td>
+				<td><?php ADMIN::input_yesno('canlogin',$mem->canLogin(),70,1,0,_YES,_NO,$mem->isAdmin()); ?></td>
         <?php } ?>
         </tr><tr>
             <td><?php echo _MEMBERS_NOTES?></td>
@@ -1912,11 +1914,11 @@ class ADMIN {
         </tr>
         <tr>
             <td><?php echo _MEMBERS_USEAUTOSAVE?> <?php help('autosave'); ?></td>
-            <td><?php $this->input_yesno('autosave', $mem->getAutosave(), 87); ?></td>
+			<td><?php ADMIN::input_yesno('autosave', $mem->getAutosave(), 87); ?></td>
         </tr>
         <?php
             // plugin options
-            $this->_insertPluginOptions('member',$memberid);
+			ADMIN::_insertPluginOptions('member',$memberid);
         ?>
         <tr>
             <th colspan="2"><?php echo _MEMBERS_EDIT ?></th>
@@ -2325,7 +2327,7 @@ class ADMIN {
                 ?></td>
             </tr><tr>
                 <td><?php echo _TEAM_ADMIN?><?php help('teamadmin'); ?></td>
-                <td><?php $this->input_yesno('admin',0,10020); ?></td>
+				<td><?php ADMIN::input_yesno('admin',0,10020); ?></td>
             </tr><tr>
                 <td><?php echo _TEAM_ADD?></td>
                 <td><input type='submit' value='<?php echo _TEAM_ADD_BTN?>' tabindex="10030" /></td>
@@ -2559,23 +2561,23 @@ class ADMIN {
         </tr><tr>
             <td><?php echo _EBLOG_LINEBREAKS?> <?php help('convertbreaks'); ?>
             </td>
-            <td><?php $this->input_yesno('convertbreaks',$blog->convertBreaks(),55); ?></td>
+			<td><?php ADMIN::input_yesno('convertbreaks',$blog->convertBreaks(),55); ?></td>
         </tr><tr>
             <td><?php echo _EBLOG_ALLOWPASTPOSTING?> <?php help('allowpastposting'); ?>
             </td>
-            <td><?php $this->input_yesno('allowpastposting',$blog->allowPastPosting(),57); ?></td>
+			<td><?php ADMIN::input_yesno('allowpastposting',$blog->allowPastPosting(),57); ?></td>
         </tr><tr>
             <td><?php echo _EBLOG_DISABLECOMMENTS?>
             </td>
-            <td><?php $this->input_yesno('comments',$blog->commentsEnabled(),60); ?></td>
+			<td><?php ADMIN::input_yesno('comments',$blog->commentsEnabled(),60); ?></td>
         </tr><tr>
             <td><?php echo _EBLOG_ANONYMOUS?>
             </td>
-            <td><?php $this->input_yesno('public',$blog->isPublic(),70); ?></td>
+			<td><?php ADMIN::input_yesno('public',$blog->isPublic(),70); ?></td>
         </tr><tr>
     <td><?php echo _EBLOG_REQUIREDEMAIL?>
          </td>
-         <td><?php $this->input_yesno('reqemail',$blog->emailRequired(),72); ?></td>
+		 <td><?php ADMIN::input_yesno('reqemail',$blog->emailRequired(),72); ?></td>
       </tr><tr>
             <td><?php echo _EBLOG_NOTIFY?> <?php help('blognotify'); ?></td>
             <td><input name="notify" tabindex="80" maxlength="128" size="40" value="<?php echo  htmlspecialchars($blog->getNotifyAddress(),ENT_QUOTES,_CHARSET); ?>" /></td>
@@ -2621,11 +2623,11 @@ class ADMIN {
             <td><input name="timeoffset" tabindex="120" size="3" value="<?php echo  htmlspecialchars($blog->getTimeOffset(),ENT_QUOTES,_CHARSET); ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_SEARCH?> <?php help('blogsearchable'); ?></td>
-            <td><?php $this->input_yesno('searchable',$blog->getSearchable(),122); ?></td>
+			<td><?php ADMIN::input_yesno('searchable',$blog->getSearchable(),122); ?></td>
         </tr>
         <?php
             // plugin options
-            $this->_insertPluginOptions('blog',$blogid);
+			ADMIN::_insertPluginOptions('blog',$blogid);
         ?>
         <tr>
             <th colspan="2"><?php echo _EBLOG_CHANGE?></th>
@@ -2756,7 +2758,7 @@ class ADMIN {
         </tr>
         <?php
             // insert plugin options
-            $this->_insertPluginOptions('category',$catid);
+			ADMIN::_insertPluginOptions('category',$catid);
         ?>
         <tr>
             <th colspan="2"><?php echo _EBLOG_CAT_UPDATE ?></th>
@@ -3198,7 +3200,7 @@ class ADMIN {
 
         ($member->getID() == $memberid) or $member->isAdmin() or $this->disallow();
 
-        $error = $this->deleteOneMember($memberid);
+		$error = ADMIN::deleteOneMember($memberid);
         if ($error)
             $this->error($error);
 
@@ -3212,7 +3214,7 @@ class ADMIN {
      * @static
      * @todo document this
      */
-    function deleteOneMember($memberid) {
+	public static function deleteOneMember($memberid) {
         global $manager;
 
         $memberid = intval($memberid);
@@ -4345,7 +4347,7 @@ selector();
             <td><input name="type" tabindex="110" value="<?php echo  htmlspecialchars($skin->getContentType(),ENT_QUOTES,_CHARSET) ?>" maxlength="40" size="20" /></td>
         </tr><tr>
             <td><?php echo _SKIN_INCLUDE_MODE?> <?php help('includemode')?></td>
-            <td><?php $this->input_yesno('inc_mode',$skin->getIncludeMode(),120,'skindir','normal',_PARSER_INCMODE_SKINDIR,_PARSER_INCMODE_NORMAL);?></td>
+			<td><?php ADMIN::input_yesno('inc_mode',$skin->getIncludeMode(),120,'skindir','normal',_PARSER_INCMODE_SKINDIR,_PARSER_INCMODE_NORMAL);?></td>
         </tr><tr>
             <td><?php echo _SKIN_INCLUDE_PREFIX?> <?php help('includeprefix')?></td>
             <td><input name="inc_prefix" tabindex="130" value="<?php echo  htmlspecialchars($skin->getIncludePrefix(),ENT_QUOTES,_CHARSET) ?>" maxlength="40" size="20" /></td>
@@ -4827,7 +4829,7 @@ selector();
         </tr><tr>
             <td><?php echo _SETTINGS_DISABLESITE?> <?php help('disablesite'); ?>
             </td>
-            <td><?php $this->input_yesno('DisableSite',$CONF['DisableSite'],10060); ?>
+			<td><?php ADMIN::input_yesno('DisableSite',$CONF['DisableSite'],10060); ?>
                     <br />
                 <?php echo _SETTINGS_DISABLESITEURL ?> <input name="DisableSiteURL" tabindex="10070" size="40" value="<?php echo  htmlspecialchars($CONF['DisableSiteURL'],ENT_QUOTES,_CHARSET)?>" />
             </td>
@@ -4854,7 +4856,7 @@ selector();
                 */
                ?>
             </td>
-            <td><?php /* $this->input_yesno('DisableJsTools',$CONF['DisableJsTools'],10075); */?>
+			<td><?php /* ADMIN::input_yesno('DisableJsTools',$CONF['DisableJsTools'],10075); */?>
                 <select name="DisableJsTools" tabindex="10075">
             <?php                   $extra = ($CONF['DisableJsTools'] == 1) ? 'selected="selected"' : '';
                     echo "<option $extra value='1'>",_SETTINGS_JSTOOLBAR_NONE,"</option>";
@@ -4869,7 +4871,7 @@ selector();
             <td><?php echo _SETTINGS_URLMODE?> <?php help('urlmode');?></td>
                        <td><?php
 
-                       $this->input_yesno('URLMode',$CONF['URLMode'],10077,
+					   ADMIN::input_yesno('URLMode',$CONF['URLMode'],10077,
                               'normal','pathinfo',_SETTINGS_URLMODE_NORMAL,_SETTINGS_URLMODE_PATHINFO);
 
                        echo ' ', _SETTINGS_URLMODE_HELP;
@@ -4881,7 +4883,7 @@ selector();
             <td><?php echo _SETTINGS_DEBUGVARS?> <?php help('debugvars');?></td>
                        <td><?php
 
-                        $this->input_yesno('DebugVars',$CONF['DebugVars'],10078);
+						ADMIN::input_yesno('DebugVars',$CONF['DebugVars'],10078);
 
                              ?>
 
@@ -4958,7 +4960,7 @@ selector();
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_ALLOWUPLOAD?></td>
-            <td><?php $this->input_yesno('AllowUpload',$CONF['AllowUpload'],10090); ?></td>
+			<td><?php ADMIN::input_yesno('AllowUpload',$CONF['AllowUpload'],10090); ?></td>
         </tr><tr>
             <td><?php echo _SETTINGS_ALLOWUPLOADTYPES?></td>
             <td>
@@ -4971,42 +4973,42 @@ selector();
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_MEDIAPREFIX?></td>
-            <td><?php $this->input_yesno('MediaPrefix',$CONF['MediaPrefix'],10110); ?></td>
+			<td><?php ADMIN::input_yesno('MediaPrefix',$CONF['MediaPrefix'],10110); ?></td>
 
         </tr><tr>
             <th colspan="2"><?php echo _SETTINGS_MEMBERS?></th>
         </tr><tr>
             <td><?php echo _SETTINGS_CHANGELOGIN?></td>
-            <td><?php $this->input_yesno('AllowLoginEdit',$CONF['AllowLoginEdit'],10120); ?></td>
+			<td><?php ADMIN::input_yesno('AllowLoginEdit',$CONF['AllowLoginEdit'],10120); ?></td>
         </tr><tr>
             <td><?php echo _SETTINGS_ALLOWCREATE?>
                 <?php help('allowaccountcreation'); ?>
             </td>
-            <td><?php $this->input_yesno('AllowMemberCreate',$CONF['AllowMemberCreate'],10130); ?>
+			<td><?php ADMIN::input_yesno('AllowMemberCreate',$CONF['AllowMemberCreate'],10130); ?>
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_NEWLOGIN?> <?php help('allownewmemberlogin'); ?>
                 <br /><?php echo _SETTINGS_NEWLOGIN2?>
             </td>
-            <td><?php $this->input_yesno('NewMemberCanLogon',$CONF['NewMemberCanLogon'],10140); ?>
+			<td><?php ADMIN::input_yesno('NewMemberCanLogon',$CONF['NewMemberCanLogon'],10140); ?>
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_MEMBERMSGS?>
                 <?php help('messageservice'); ?>
             </td>
-            <td><?php $this->input_yesno('AllowMemberMail',$CONF['AllowMemberMail'],10150); ?>
+			<td><?php ADMIN::input_yesno('AllowMemberMail',$CONF['AllowMemberMail'],10150); ?>
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_NONMEMBERMSGS?>
                 <?php help('messageservice'); ?>
             </td>
-            <td><?php $this->input_yesno('NonmemberMail',$CONF['NonmemberMail'],10155); ?>
+			<td><?php ADMIN::input_yesno('NonmemberMail',$CONF['NonmemberMail'],10155); ?>
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_PROTECTMEMNAMES?>
                 <?php help('protectmemnames'); ?>
             </td>
-            <td><?php $this->input_yesno('ProtectMemNames',$CONF['ProtectMemNames'],10156); ?>
+			<td><?php ADMIN::input_yesno('ProtectMemNames',$CONF['ProtectMemNames'],10156); ?>
             </td>
 
 
@@ -5024,15 +5026,15 @@ selector();
             <td><input name="CookiePath" tabindex="10170" size="40" value="<?php echo  htmlspecialchars($CONF['CookiePath'],ENT_QUOTES,_CHARSET)?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_COOKIESECURE?></td>
-            <td><?php $this->input_yesno('CookieSecure',$CONF['CookieSecure'],10180); ?></td>
+			<td><?php ADMIN::input_yesno('CookieSecure',$CONF['CookieSecure'],10180); ?></td>
         </tr><tr>
             <td><?php echo _SETTINGS_COOKIELIFE?></td>
-            <td><?php $this->input_yesno('SessionCookie',$CONF['SessionCookie'],10190,
+			<td><?php ADMIN::input_yesno('SessionCookie',$CONF['SessionCookie'],10190,
                               1,0,_SETTINGS_COOKIESESSION,_SETTINGS_COOKIEMONTH); ?>
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_LASTVISIT?></td>
-            <td><?php $this->input_yesno('LastVisit',$CONF['LastVisit'],10200); ?></td>
+			<td><?php ADMIN::input_yesno('LastVisit',$CONF['LastVisit'],10200); ?></td>
 
 
 
@@ -6555,7 +6557,7 @@ selector();
      * @static
      * @todo document this
      */
-    function _insertPluginOptions($context, $contextid = 0) {
+	public static function _insertPluginOptions($context, $contextid = 0) {
         // get all current values for this contextid
         // (note: this might contain doubles for overlapping contextids)
         $aIdToValue = array();
@@ -6625,8 +6627,9 @@ selector();
     /**
      * Helper functions to create option forms etc.
      * @todo document parameters
+	 * @static
      */
-    function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0) {
+	public static function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0) {
         $id = htmlspecialchars($name,ENT_QUOTES,_CHARSET);
         $id = str_replace('[','-',$id);
         $id = str_replace(']','-',$id);

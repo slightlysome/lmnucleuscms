@@ -29,13 +29,19 @@ class TEMPLATE {
 		return intval($this->id);
 	}
 
-	// (static)
-	function createFromName($name) {
+	/**
+	 * @todo document this
+	 * @static
+	 */
+	public static function createFromName($name) {
 		return new TEMPLATE(TEMPLATE::getIdFromName($name));
 	}
 
-	// (static)
-	function getIdFromName($name) {
+	/**
+	 * @todo document this
+	 * @static
+	 */
+	public static function getIdFromName($name) {
 		$query =  'SELECT tdnumber'
 			   . ' FROM '.sql_table('template_desc')
 			   . ' WHERE tdname="'.sql_real_escape_string($name).'"';
@@ -81,9 +87,9 @@ class TEMPLATE {
 	/**
 	 * Creates a new template
 	 *
-	 * (static)
+	 * @static
 	 */
-	function createNew($name, $desc) {
+	public static function createNew($name, $desc) {
 		global $manager;
 		
 		$data = array(
@@ -110,11 +116,11 @@ class TEMPLATE {
 
 	/**
 	 * Reads a template and returns an array with the parts.
-	 * (static)
 	 *
 	 * @param $name name of the template file
+	 * @static
 	 */
-	function read($name) {
+	public static function read($name) {
 		global $manager;
 		$data = array('template' => &$name);
 		$manager->notify('PreTemplateRead', $data);
@@ -137,14 +143,14 @@ class TEMPLATE {
 
 	/**
 	  * fills a template with values
-	  * (static)
 	  *
 	  * @param $template
 	  *		Template to be used
 	  * @param $values
 	  *		Array of all the values
+	  * @static
 	  */
-	function fill($template, $values) {
+	public static function fill($template, $values) {
 
 		if (sizeof($values) != 0) {
 			// go through all the values
@@ -157,27 +163,37 @@ class TEMPLATE {
 		return preg_replace('/<%[a-zA-Z]+%>/','',$template);
 	}
 
-	// returns true if there is a template with the given shortname
-	// (static)
-	function exists($name) {
+	/**
+	 * returns true if there is a template with the given shortname
+	 * @static
+	 */
+	public static function exists($name) {
 		$r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdname="'.sql_real_escape_string($name).'"');
 		return (sql_num_rows($r) != 0);
 	}
 
-	// returns true if there is a template with the given ID
-	// (static)
-	function existsID($id) {
+	/**
+	 * returns true if there is a template with the given ID
+	 * @static
+	 */
+	public static function existsID($id) {
 		$r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdnumber='.intval($id));
 		return (sql_num_rows($r) != 0);
 	}
 
-	// (static)
-	function getNameFromId($id) {
+	/**
+	 * @static
+	 * @todo document this
+	 */
+	public static function getNameFromId($id) {
 		return quickQuery('SELECT tdname as result FROM '.sql_table('template_desc').' WHERE tdnumber=' . intval($id));
 	}
 
-	// (static)
-	function getDesc($id) {
+	/**
+	 * @static
+	 * @todo document this
+	 */
+	public static function getDesc($id) {
 		$query = 'SELECT tddesc FROM '.sql_table('template_desc').' WHERE tdnumber='. intval($id);
 		$res = sql_query($query);
 		$obj = sql_fetch_object($res);
