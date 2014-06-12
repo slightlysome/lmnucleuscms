@@ -187,7 +187,8 @@ function listplug_table_pluginlist($template, $type) {
 					echo '<a href="',htmlspecialchars($plug->getURL(),ENT_QUOTES,_CHARSET),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a><br />';
 				echo '</td>';
 				echo '<td>';
-					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
+					$description = $plug->getDescription();
+					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($description);
 					if (sizeof($plug->getEventList()) > 0) {
 						echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',htmlspecialchars(implode($plug->getEventList(),', '),ENT_QUOTES,_CHARSET);
 						// check the database to see if it is up-to-date and notice the user if not
