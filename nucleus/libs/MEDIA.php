@@ -29,9 +29,10 @@ class MEDIA {
 	  * Gets the list of collections available to the currently logged
 	  * in member
 	  *
-	  * @returns array of dirname => display name
+	  * @return array of dirname => display name
+	  * @static
 	  */
-	function getCollectionList($exceptReadOnly = false) {
+	public static function getCollectionList($exceptReadOnly = false) {
 		global $member, $DIR_MEDIA;
 
 		$collections = array();
@@ -69,8 +70,9 @@ class MEDIA {
 	  *		name of the collection
 	  * @param $filter
 	  *		filter on filename (defaults to none)
+	  * @static
 	  */
-	function getMediaListByCollection($collection, $filter = '') {
+	public static function getMediaListByCollection($collection, $filter = '') {
 		global $DIR_MEDIA;
 
 		$filelist = array();
@@ -96,7 +98,11 @@ class MEDIA {
 		return $filelist;
 	}
 
-	function checkFilter($strText, $strFilter) {
+	/**
+	 * @todo document this
+	 * @static
+	 */
+	public static function checkFilter($strText, $strFilter) {
 		if ($strFilter == '')
 			return 1;
 		else
@@ -106,8 +112,9 @@ class MEDIA {
 	/**
 	  * checks if a collection exists with the given name, and if it's
 	  * allowed for the currently logged in member to upload files to it
+	  * @static
 	  */
-	function isValidCollection($collectionName, $exceptReadOnly = false) {
+	public static function isValidCollection($collectionName, $exceptReadOnly = false) {
 		global $member, $DIR_MEDIA;
 
 		// allow creating new private directory
@@ -126,7 +133,7 @@ class MEDIA {
 
 		// other collections should exist
 		return @is_dir($collectionDir);
-       }
+	   }
 
 	/**
 	  * Adds an uploaded file to the media archive
@@ -138,8 +145,9 @@ class MEDIA {
 	  * @param filename
 	  *		the filename that should be used to save the file as
 	  *		(date prefix should be already added here)
+	  * @static
 	  */
-	function addMediaObject($collection, $uploadfile, $filename) {
+	public static function addMediaObject($collection, $uploadfile, $filename) {
 		global $DIR_MEDIA, $manager;
 
 		// clean filename of characters that may cause trouble in a filename using cleanFileName() function from globalfunctions.php
@@ -222,8 +230,9 @@ class MEDIA {
 	 *		File data (binary)
 	 *
 	 * NOTE: does not check if $collection is valid.
+	 * @static
 	 */
-	function addMediaObjectRaw($collection, $filename, &$data) {
+	public static function addMediaObjectRaw($collection, $filename, &$data) {
 		global $DIR_MEDIA;
 
 		// check dir permissions (try to create dir if it does not exist)
@@ -281,12 +290,12 @@ class MEDIA {
   */
 class MEDIAOBJECT {
 
-	var $private;
-	var $collection;
-	var $filename;
-	var $timestamp;
+	public $private;
+	public $collection;
+	public $filename;
+	public $timestamp;
 
-	function MEDIAOBJECT($collection, $filename, $timestamp) {
+	public function MEDIAOBJECT($collection, $filename, $timestamp) {
 		$this->private = is_numeric($collection);
 		$this->collection = $collection;
 		$this->filename = $filename;
@@ -302,5 +311,3 @@ function sort_media($a, $b) {
 	if ($a->timestamp == $b->timestamp) return 0;
 	return ($a->timestamp > $b->timestamp) ? -1 : 1;
 }
-
-?>

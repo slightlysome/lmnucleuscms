@@ -24,13 +24,13 @@ require_once dirname(__FILE__) . '/COMMENTACTIONS.php';
 class COMMENTS {
 
 	// item for which comment are being displayed
-	var $itemid;
+	public $itemid;
 
 	// reference to the itemActions object that is calling the showComments function
-	var $itemActions;
+	public $itemActions;
 
 	// total amount of comments displayed
-	var $commentcount;
+	public $commentcount;
 
 	/**
 	 * Creates a new COMMENTS object for the given blog and item
@@ -38,7 +38,7 @@ class COMMENTS {
 	 * @param $itemid
 	 *		id of the item
 	 */
-	function COMMENTS($itemid) {
+	public function COMMENTS($itemid) {
 		$this->itemid = intval($itemid);
 	}
 	
@@ -48,7 +48,7 @@ class COMMENTS {
 	 * @param $itemActions
 	 *		itemActions object, that will take care of the parsing
 	 */
-	function setItemActions(&$itemActions) {
+	public function setItemActions(&$itemActions) {
 		$this->itemActions =& $itemActions;
 	}
 
@@ -66,7 +66,7 @@ class COMMENTS {
 	 * @param highlight
 	 *		Highlight to use (if any)
 	 */
-	function showComments($template, $maxToShow = -1, $showNone = 1, $highlight = '') {
+	public function showComments($template, $maxToShow = -1, $showNone = 1, $highlight = '') {
 		global $CONF, $manager;
 
 		// create parser object & action handler
@@ -123,7 +123,7 @@ class COMMENTS {
 	/**
 	 * Returns the amount of comments for this itemid
 	 */
-	function amountComments() {
+	public function amountComments() {
 		$query =  'SELECT COUNT(*)'
 			   . ' FROM '.sql_table('comment').' as c'
 			   . ' WHERE c.citem='. $this->itemid;
@@ -139,7 +139,7 @@ class COMMENTS {
 	 * @param array $comment
 	 * @return mixed
 	 */
-	function addComment($timestamp, $comment)
+	public function addComment($timestamp, $comment)
 	{
 		global $CONF, $member, $manager;
 
@@ -377,7 +377,7 @@ class COMMENTS {
 	 * Checks if a comment is valid and call plugins
 	 * that can check if the comment is a spam comment	  
 	 */
-	function isValidComment(&$comment, &$spamcheck) {
+	public function isValidComment(&$comment, &$spamcheck) {
 
 		global $member, $manager;
 
@@ -445,5 +445,3 @@ class COMMENTS {
 	}
 
 }
-
-?>

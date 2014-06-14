@@ -27,13 +27,13 @@
 
 class SEARCH {
 
-	var $querystring;
-	var $marked;
-	var $inclusive;
-	var $blogs;
+	public $querystring;
+	public $marked;
+	public $inclusive;
+	public $blogs;
 
 
-	function SEARCH($text) {
+	public function SEARCH($text) {
 		global $blogid;
 		$text = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/","",$text);
 		$this->querystring	= $text;
@@ -47,7 +47,7 @@ class SEARCH {
 			$this->blogs[] = intval($obj->bnumber);
 	}
 
-	function  boolean_sql_select($match){
+	public function boolean_sql_select($match){
 		if (strlen($this->inclusive) > 0) {
 		   /* build sql for determining score for each record */
 		   $result=explode(" ",$this->inclusive);
@@ -69,7 +69,7 @@ class SEARCH {
 		}
 	}
 
-	function boolean_inclusive_atoms($string){
+	public function boolean_inclusive_atoms($string){
 		$result = trim($string);
 		$result = preg_replace("#([[:space:]]{2,})#", ' ', $result);
 
@@ -100,55 +100,55 @@ class SEARCH {
 		return $result;
 	}
 
-    function boolean_sql_where($match){
+	public function boolean_sql_where($match){
 
-        $result = $this->marked;
+		$result = $this->marked;
 
-        $this->boolean_sql_where_cb1($match); // set the static $match
+		$this->boolean_sql_where_cb1($match); // set the static $match
 
-        $result = preg_replace_callback(
+		$result = preg_replace_callback(
 
-            "/foo\[\(\'([^\)]{4,})\'\)\]bar/",
+			"/foo\[\(\'([^\)]{4,})\'\)\]bar/",
 
-            array($this,'boolean_sql_where_cb1'),
+			array($this,'boolean_sql_where_cb1'),
 
-            $result);
+			$result);
 
-        $this->boolean_sql_where_cb2($match); // set the static $match
+		$this->boolean_sql_where_cb2($match); // set the static $match
 
-        $result = preg_replace_callback(
+		$result = preg_replace_callback(
 
-            "/foo\[\(\'([^\)]{1,3})\'\)\]bar/",
+			"/foo\[\(\'([^\)]{1,3})\'\)\]bar/",
 
-            array($this,'boolean_sql_where_cb2'),
+			array($this,'boolean_sql_where_cb2'),
 
-            $result);
+			$result);
 
-        return $result;
+		return $result;
 
-    }
+	}
 
-    function boolean_sql_where_cb1($matches){
+	public function boolean_sql_where_cb1($matches){
 
-        static $match;
+		static $match;
 
-        if (!is_array($matches)) $match=$matches;
+		if (!is_array($matches)) $match=$matches;
 
-        else return ' match ('.$match.') against (\''.sql_real_escape_string($matches[1]).'\') > 0 ';
+		else return ' match ('.$match.') against (\''.sql_real_escape_string($matches[1]).'\') > 0 ';
 
-    }
+	}
 
-    function boolean_sql_where_cb2($matches){
+	public function boolean_sql_where_cb2($matches){
 
-        static $match;
+		static $match;
 
-        if (!is_array($matches)) $match=$matches;
+		if (!is_array($matches)) $match=$matches;
 
-        else return ' ('.$this->boolean_sql_where_short(sql_real_escape_string($mathes[1]),$match).') ';
+		else return ' ('.$this->boolean_sql_where_short(sql_real_escape_string($mathes[1]),$match).') ';
 
-    }	
+	}	
 
-	function boolean_mark_atoms($string){
+	public function boolean_mark_atoms($string){
 		$result = trim($string);
 		$result = preg_replace("/([[:space:]]{2,})/",' ',$result);
 
@@ -194,7 +194,7 @@ class SEARCH {
 		return $result;
 	}
 
-	function boolean_sql_where_short($string,$match){
+	public function boolean_sql_where_short($string,$match){
 		$match_a = explode(',',$match);
 		for($ith=0;$ith<count($match_a);$ith++){
 			$like_a[$ith] = " $match_a[$ith] LIKE '% $string %' ";
@@ -203,7 +203,7 @@ class SEARCH {
 
 		return $like;
 	}
-	function boolean_sql_select_short($string,$match){
+	public function boolean_sql_select_short($string,$match){
 		$match_a = explode(',',$match);
 		$score_unit_weight = .2;
 		for($ith=0;$ith<count($match_a);$ith++){
@@ -218,4 +218,3 @@ class SEARCH {
 		return $score;
 	}
 }
-?>

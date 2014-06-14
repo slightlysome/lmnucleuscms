@@ -23,34 +23,34 @@
 class BaseActions {
 
 	// depth level for includes (max. level is 3)
-	var $level;
+	public $level;
 
 	// array of evaluated conditions (true/false). The element at the end is the one for the most nested
 	// if block.
-	var $if_conditions;
+	public $if_conditions;
 
 	// in the "elseif" / "elseifnot" sequences, if one of the conditions become "true" remained conditions should not
 	// be tested. this variable (actually a stack) holds this information.
-	var $if_execute;
+	public $if_execute;
 
 	// at all times, can be evaluated to either true if the current block needs to be displayed. This
 	// variable is used to decide to skip skinvars in parts that will never be outputted.
-	var $if_currentlevel;
+	public $if_currentlevel;
 
 	// contains a search string with keywords that need to be highlighted. These get parsed into $aHighlight
-	var $strHighlight;
+	public $strHighlight;
 
 	// array of keywords that need to be highlighted in search results (see the highlight()
 	// and parseHighlight() methods)
-	var $aHighlight;
+	public $aHighlight;
 
 	// reference to the parser object that is using this object as actions-handler
-	var $parser;
+	public $parser;
 
 	/**
 	 *  Constructor for a new BaseAction object
 	 */
-	function BaseActions() {
+	public function BaseActions() {
 		$this->level = 0;
 
 		// if nesting level
@@ -72,7 +72,7 @@ class BaseActions {
 	 * 
 	 * @param $filename
 	 */
-	function parse_include($filename) {
+	public function parse_include($filename) {
 		@readfile($this->getIncludeFileName($filename));
 	}
 
@@ -81,7 +81,7 @@ class BaseActions {
 	 * 
 	 * @param $filename
 	 */
-	function parse_phpinclude($filename) {
+	public function parse_phpinclude($filename) {
 		includephp($this->getIncludeFileName($filename));
 	}
 
@@ -91,13 +91,13 @@ class BaseActions {
 	 * 
 	 * @param $filename
 	 */
-	function parse_parsedinclude($filename) {
+	public function parse_parsedinclude($filename) {
 		// check current level
 		if ($this->level > 3) return;	// max. depth reached (avoid endless loop)
 		$file = $this->getIncludeFileName($filename);
 		if (!file_exists($file)) return;
-        $contents = file_get_contents($file);
-        if (empty($contents)) return;
+		$contents = file_get_contents($file);
+		if (empty($contents)) return;
 		
 		$this->level = $this->level + 1;
 		// parse file contents
@@ -114,7 +114,7 @@ class BaseActions {
 	 * 
 	 * @param $filename
 	 */
-	function getIncludeFileName($filename) {
+	public function getIncludeFileName($filename) {
 		// leave absolute filenames and http urls as they are
 		if (
 				(substr($filename,0,1) == '/')
@@ -137,7 +137,7 @@ class BaseActions {
 	 *
 	 * e.g. <skinfile(default/myfile.sth)>
 	 */
-	function parse_skinfile($filename) {
+	public function parse_skinfile($filename) {
 		global $CONF;
 
 		echo $CONF['SkinsURL'] . PARSER::getProperty('IncludePrefix') . $filename;
@@ -146,14 +146,14 @@ class BaseActions {
 	/**
 	 * Sets a property for the parser
 	 */
-	function parse_set($property, $value) {
+	public function parse_set($property, $value) {
 		PARSER::setProperty($property, $value);
 	}
 
 	/**
 	 * Helper function: add if condition
 	 */
-	function _addIfCondition($condition) {
+	protected function _addIfCondition($condition) {
 
 		array_push($this->if_conditions,$condition);
 
@@ -165,7 +165,7 @@ class BaseActions {
 	/**
 	 * Helper function: update the Top of the If Conditions Array
 	 */
-	function _updateTopIfCondition() {
+	private function _updateTopIfCondition() {
 		if (sizeof($this->if_conditions) == 0) {
 			$this->if_currentlevel = 1;
 		}
@@ -177,7 +177,7 @@ class BaseActions {
 	/**
 	 * Helper function for elseif / elseifnot
 	 */
-	function _addIfExecute() {
+	private function _addIfExecute() {
 		array_push($this->if_execute, 0);
 	}
 
@@ -185,7 +185,7 @@ class BaseActions {
 	 * Helper function for elseif / elseifnot
 	 * @param string condition to be fullfilled
 	 */
-	function _updateIfExecute($condition) {
+	private function _updateIfExecute($condition) {
 		$index = sizeof($this->if_execute) - 1;
 		$this->if_execute[$index] = $this->if_execute[$index] || $condition;
 	}
@@ -193,7 +193,7 @@ class BaseActions {
 	/**
 	 * returns the currently top if condition
 	 */
-	function _getTopIfCondition() {
+	private function _getTopIfCondition() {
 		return $this->if_currentlevel;
 	}
 
@@ -203,7 +203,7 @@ class BaseActions {
 	 * @param $highlight
 	 *		A series of search terms
 	 */
-	function setHighlight($highlight) {
+	public function setHighlight($highlight) {
 		$this->strHighlight = $highlight;
 		if ($highlight) {
 			$this->aHighlight = parseHighlight($highlight);
@@ -217,7 +217,7 @@ class BaseActions {
 	 *		Data that needs to be highlighted
 	 * @see setHighlight
 	 */
-	function highlight(&$data) {
+	protected function highlight(&$data) {
 		if ($this->aHighlight)
 			return highlight($data,$this->aHighlight,$this->template['SEARCH_HIGHLIGHT']);
 		else
@@ -227,7 +227,7 @@ class BaseActions {
 	/**
 	 * Parses <%if%> statements
 	 */
-	function parse_if() {
+	public function parse_if() {
 		$this->_addIfExecute();
 
 		$args = func_get_args();
@@ -238,7 +238,7 @@ class BaseActions {
 	/**
 	 * Parses <%else%> statements
 	 */
-	function parse_else() {
+	public function parse_else() {
 		if (sizeof($this->if_conditions) == 0) return;
 		array_pop($this->if_conditions);
 		if ($this->if_currentlevel) {
@@ -257,7 +257,7 @@ class BaseActions {
 	/**
 	 * Parses <%elseif%> statements
 	 */
-	function parse_elseif() {
+	public function parse_elseif() {
 		if (sizeof($this->if_conditions) == 0) return;
 		array_pop($this->if_conditions);
 		if ($this->if_currentlevel) {
@@ -278,7 +278,7 @@ class BaseActions {
 	/**
 	 * Parses <%ifnot%> statements
 	 */
-	function parse_ifnot() {
+	public function parse_ifnot() {
 		$this->_addIfExecute();
 
 		$args = func_get_args();
@@ -289,7 +289,7 @@ class BaseActions {
 	/**
 	 * Parses <%elseifnot%> statements
 	 */
-	function parse_elseifnot() {
+	public function parse_elseifnot() {
 		if (sizeof($this->if_conditions) == 0) return;
 		array_pop($this->if_conditions);
 		if ($this->if_currentlevel) {
@@ -311,7 +311,7 @@ class BaseActions {
 	 * Ends a conditional if-block
 	 * see e.g. ifcat (BLOG), ifblogsetting (PAGEFACTORY)
 	 */
-	function parse_endif() {
+	public function parse_endif() {
 		// we can only close what has been opened
 		if (sizeof($this->if_conditions) == 0) return;
 
@@ -326,4 +326,3 @@ class BaseActions {
 		$this->_updateTopIfCondition();
 	}
 }
-?>

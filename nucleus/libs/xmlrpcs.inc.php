@@ -1171,4 +1171,3 @@
 			print $r->serialize();
 		}
 	}
-?>

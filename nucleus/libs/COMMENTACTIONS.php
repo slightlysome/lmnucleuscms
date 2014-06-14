@@ -21,15 +21,15 @@ class COMMENTACTIONS extends BaseActions {
 
 	// ref to COMMENTS object which is using this object to handle
 	// its templatevars
-	var $commentsObj;
+	public $commentsObj;
 
 	// template to use to parse the comments
-	var $template;
+	public $template;
 
 	// comment currenlty being handled (mysql result assoc array; see COMMENTS::showComments())
-	var $currentComment;
+	public $currentComment;
 
-	function COMMENTACTIONS(&$comments) {
+	public function COMMENTACTIONS(&$comments) {
 		// call constructor of superclass first
 		$this->BaseActions();
 
@@ -37,7 +37,7 @@ class COMMENTACTIONS extends BaseActions {
 		$this->setCommentsObj($comments);
 	}
 
-	function getDefinedActions() {
+	public function getDefinedActions() {
 		return array(
 			'blogurl',
 			'commentcount',
@@ -80,26 +80,26 @@ class COMMENTACTIONS extends BaseActions {
 		);
 	}
 
-	function setParser(&$parser) {
+	public function setParser(&$parser) {
 		$this->parser =& $parser;
 	}
 
-	function setCommentsObj(&$commentsObj) {
+	public function setCommentsObj(&$commentsObj) {
 		$this->commentsObj =& $commentsObj;
 	}
 
-	function setTemplate($template) {
+	public function setTemplate($template) {
 		$this->template =& $template;
 	}
 
-	function setCurrentComment(&$comment) {
+	public function setCurrentComment(&$comment) {
 
 		global $manager;
 
 		// begin if: member comment
 		if ($comment['memberid'] != 0)
 		{
-			$comment['authtext'] = $template['COMMENTS_AUTH'];
+			$comment['authtext'] = ( empty($this->template['COMMENTS_AUTH']) ) ? '' : $this->template['COMMENTS_AUTH'];
 
 			$mem =& $manager->getMember($comment['memberid']);
 			$comment['user'] = $mem->getDisplayName();
@@ -169,7 +169,7 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Parse templatevar authtext
 	 */
-	function parse_authtext() {
+	public function parse_authtext() {
 		if ($this->currentComment['memberid'] != 0)
 			$this->parser->parse($this->template['COMMENTS_AUTH']);
 	}
@@ -177,14 +177,14 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Parse templatevar blogid
 	 */
-	function parse_blogid() {
+	public function parse_blogid() {
 		echo $this->currentComment['blogid'];
 	}
 
 	/**
 	 * Parse templatevar blogurl
 	 */
-	function parse_blogurl() {
+	public function parse_blogurl() {
 		global $manager;
 		$blogid = getBlogIDFromItemID($this->commentsObj->itemid);
 		$blog =& $manager->getBlog($blogid);
@@ -194,28 +194,28 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Parse templatevar body
 	 */
-	function parse_body() {
+	public function parse_body() {
 		echo $this->highlight($this->currentComment['body']);
 	}
 
 	/**
 	 * Parse templatevar commentcount
 	 */
-	function parse_commentcount() {
+	public function parse_commentcount() {
 			echo $this->commentsObj->commentcount;
 	}
 
 	/**
 	 * Parse templatevar commentid
 	 */
-	function parse_commentid() {
+	public function parse_commentid() {
 		echo $this->currentComment['commentid'];
 	}
 
 	/**
 	 * Parse templatevar commentword
 	 */
-	function parse_commentword() {
+	public function parse_commentword() {
 		if ($this->commentsObj->commentcount == 1)
 			echo $this->template['COMMENTS_ONE'];
 		else
@@ -225,14 +225,14 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Parse templatevar date
 	 */
-	function parse_date($format = '') {
+	public function parse_date($format = '') {
 		echo formatDate($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE'], $this->commentsObj->itemActions->blog);
 	}
 
 	/**
 	 * Parse templatevar email
 	 */
-	function parse_email() {
+	public function parse_email() {
 		$email = $this->currentComment['email'];
 		$email = str_replace('@', ' (at) ', $email);
 		$email = str_replace('.', ' (dot) ', $email);
@@ -242,35 +242,35 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Parse templatevar excerpt
 	 */
-	function parse_excerpt() {
+	public function parse_excerpt() {
 		echo stringToXML(shorten($this->currentComment['body'], 60, '...'));
 	}
 
 	/**
 	 * Parse templatevar host
 	 */
-	function parse_host() {
+	public function parse_host() {
 		echo $this->currentComment['host'];
 	}
 
 	/**
 	 * Parse templatevar ip
 	 */
-	function parse_ip() {
+	public function parse_ip() {
 		echo $this->currentComment['ip'];
 	}
 
 	/**
 	 * Parse templatevar itemid
 	 */
-	function parse_itemid() {
+	public function parse_itemid() {
 		echo $this->commentsObj->itemid;
 	}
 
 	/**
 	 * Parse templatevar itemlink
 	 */
-	function parse_itemlink() {
+	public function parse_itemlink() {
 		echo createLink(
 			'item',
 			array(
@@ -285,7 +285,7 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Parse templatevar itemtitle
 	 */
-	function parse_itemtitle($maxLength = 0) {
+	public function parse_itemtitle($maxLength = 0) {
 		if ($maxLength == 0)
 			$this->commentsObj->itemActions->parse_title();
 		else
@@ -295,14 +295,14 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Parse templatevar memberid
 	 */
-	function parse_memberid() {
+	public function parse_memberid() {
 		echo $this->currentComment['memberid'];
 	}
 
 	/**
 	 * Parse templatevar short
 	 */
-	function parse_short() {
+	public function parse_short() {
 		$tmp = strtok($this->currentComment['body'],"\n");
 		$tmp = str_replace('<br />','',$tmp);
 		echo $tmp;
@@ -313,7 +313,7 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Parse templatevar time
 	 */
-	function parse_time($format = '') {
+	public function parse_time($format = '') {
 		echo strftime(
 				($format == '') ? $this->template['FORMAT_TIME'] : $format,
 				$this->currentComment['timestamp']
@@ -323,7 +323,7 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Parse templatevar timestamp
 	 */
-	function parse_timestamp() {
+	public function parse_timestamp() {
 		echo $this->currentComment['timestamp'];
 	}
 
@@ -334,7 +334,7 @@ class COMMENTACTIONS extends BaseActions {
 	  *
 	  * extra parameters can be added
 	  */
-	function parse_plugin($pluginName) {
+	public function parse_plugin($pluginName) {
 		global $manager;
 
 		// only continue when the plugin is really installed
@@ -361,7 +361,7 @@ class COMMENTACTIONS extends BaseActions {
 	 * Parse templatevar user
 	 * @param string $mode
 	 */
-	function parse_user($mode = '')
+	public function parse_user($mode = '')
 	{
 		global $manager;
 
@@ -379,7 +379,7 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Parse templatevar useremail
 	 */
-	function parse_useremail() {
+	public function parse_useremail() {
 		global $manager;
 		if ($this->currentComment['memberid'] > 0)
 		{
@@ -402,7 +402,7 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Parse templatevar userid
 	 */
-	function parse_userid() {
+	public function parse_userid() {
 			echo $this->currentComment['userid'];
 	}
 
@@ -410,7 +410,7 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Parse templatevar userlink
 	 */
-	function parse_userlink() {
+	public function parse_userlink() {
 		if ($this->currentComment['userlinkraw']) {
 			echo '<a href="'.$this->currentComment['userlinkraw'].'" rel="nofollow">'.$this->currentComment['user'].'</a>';
 		} else {
@@ -421,14 +421,14 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Parse templatevar userlinkraw
 	 */
-	function parse_userlinkraw() {
+	public function parse_userlinkraw() {
 		echo $this->currentComment['userlinkraw'];
 	}
 
 	/**
 	 * Parse templatevar userwebsite
 	 */
-	function parse_userwebsite() {
+	public function parse_userwebsite() {
 		if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false))
 			echo $this->currentComment['userlinkraw'];
 	}
@@ -436,7 +436,7 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Parse templatevar userwebsitelink
 	 */
-	function parse_userwebsitelink() {
+	public function parse_userwebsitelink() {
 		if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false)) {
 			echo '<a href="'.$this->currentComment['userlinkraw'].'" rel="nofollow">'.$this->currentComment['user'].'</a>';
 		} else {
@@ -453,7 +453,7 @@ class COMMENTACTIONS extends BaseActions {
 	 * @param string $name property of field
 	 * @param string $value value of property
 	 */
-	function checkCondition($field, $name='', $value = '') {
+	public function checkCondition($field, $name='', $value = '') {
 		global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
 
 		$condition = 0;
@@ -511,7 +511,7 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 *  Different checks for a category
 	 */
-	function _ifCategory($name = '', $value='') {
+	private function _ifCategory($name = '', $value='') {
 		global $blog, $catid;
 
 		// when no parameter is defined, just check if a category is selected
@@ -536,7 +536,7 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 *  Different checks for an author
 	 */
-	function _ifAuthor($name = '', $value='') {
+	private function _ifAuthor($name = '', $value='') {
 		global $member, $manager;
 
 		if ($this->currentComment['memberid'] == 0) return false;
@@ -584,7 +584,7 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 *  Different checks for a category
 	 */
-	function _ifItemCategory($name = '', $value='') {
+	private function _ifItemCategory($name = '', $value='') {
 		global $catid, $manager;
 
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
@@ -613,7 +613,7 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 *  Checks if a member is on the team of a blog and return his rights
 	 */
-	function _ifOnTeam($blogName = '') {
+	private function _ifOnTeam($blogName = '') {
 		global $blog, $member, $manager;
 
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
@@ -636,7 +636,7 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 *  Checks if a member is admin of a blog
 	 */
-	function _ifAdmin($blogName = '') {
+	private function _ifAdmin($blogName = '') {
 		global $blog, $member, $manager;
 
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
@@ -665,7 +665,7 @@ class COMMENTACTIONS extends BaseActions {
 	 *	hasplugin,PlugName,OptionName=value
 	 *	   -> checks if the option OptionName from plugin PlugName is set to value
 	 */
-	function _ifHasPlugin($name, $value) {
+	private function _ifHasPlugin($name, $value) {
 		global $manager;
 		$condition = false;
 		// (pluginInstalled method won't write a message in the actionlog on failure)
@@ -690,7 +690,7 @@ class COMMENTACTIONS extends BaseActions {
 	/**
 	 * Checks if a plugin exists and call its doIf function
 	 */
-	function _ifPlugin($name, $key = '', $value = '') {
+	private function _ifPlugin($name, $key = '', $value = '') {
 		global $manager;
 
 		$plugin =& $manager->getPlugin('NP_' . $name);
@@ -703,4 +703,3 @@ class COMMENTACTIONS extends BaseActions {
 	}
 
 }
-?>

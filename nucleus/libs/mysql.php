@@ -121,7 +121,3 @@ if (!function_exists('mysql_query'))
 		return mysqli_real_escape_string($MYSQL_CONN,$val);
 	}
 }
-
-
-
-?>

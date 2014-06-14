@@ -26,7 +26,7 @@ class Backup
 	/**
 	 * Constructor
 	 */
-	function Backup()
+	public function Backup()
 	{
 		// do nothing
 	}
@@ -41,7 +41,7 @@ class Backup
 	  * @param gzip
 	  *		1 = compress backup file, 0 = no compression (default)
 	  */
-	function do_backup($gzip = 0) {
+	public function do_backup($gzip = 0) {
 		global $manager;
 		
 		// tables of which backup is needed
@@ -138,7 +138,7 @@ class Backup
 	  * Creates a dump for a single table
 	  * ($tablename and $key are filled in by array_walk)
 	  */
-	function _backup_dump_table($tablename, $key) {
+	private function _backup_dump_table($tablename, $key) {
 	
 		echo "#\n";
 		echo "# TABLE: " . $tablename . "\n";
@@ -154,7 +154,7 @@ class Backup
 	/**
 	  * Creates a dump of the table structure for one table
 	  */
-	function _backup_dump_structure($tablename) {
+	private function _backup_dump_structure($tablename) {
 	
 		// add command to drop table on restore
 		echo "DROP TABLE IF EXISTS $tablename;\n";
@@ -242,7 +242,7 @@ class Backup
 	 *
 	 * (column1, column2, ..., columnn)
 	 */
-	function _backup_get_field_names($result, $num_fields) {
+	private function _backup_get_field_names($result, $num_fields) {
 	
 	/*	if (function_exists('mysqli_fetch_fields') ) {
 			
@@ -265,7 +265,7 @@ class Backup
 	/**
 	  * Creates a dump of the table content for one table	  
 	  */
-	function _backup_dump_contents($tablename) {
+	private function _backup_dump_contents($tablename) {
 		//
 		// Grab the data from the table.
 		//
@@ -320,7 +320,7 @@ class Backup
 	/**
 	 * copied from phpBB
 	 */	 	
-	function gzip_PrintFourChars($Val)
+	private function gzip_PrintFourChars($Val)
 	{
 		for ($i = 0; $i < 4; $i ++)
 		{
@@ -333,7 +333,7 @@ class Backup
 	/**
 	 * Restores a database backup
 	 */	
-	function do_restore() {
+	public function do_restore() {
 	
 		$uploadInfo = postFileInfo('backup_file');
 	
@@ -386,7 +386,7 @@ class Backup
 	/**
 	 * Executes a SQL query
 	 */	
-	function _execute_queries($sql_query) {
+	private function _execute_queries($sql_query) {
 		if (!$sql_query) return;
 	
 		// Strip out sql comments...
@@ -415,7 +415,7 @@ class Backup
 	 * remove_remarks will strip the sql comment lines
 	 * out of an uploaded sql file
 	 */	
-	function remove_remarks($sql)
+	private function remove_remarks($sql)
 	{
 		$lines = explode("\n", $sql);
 	
@@ -453,7 +453,7 @@ class Backup
 	 * Note: expects trim() to have already been run on $sql.	 
 	 * taken from phpBB
 	 */	 
-	function split_sql_file($sql)
+	private function split_sql_file($sql)
 	{
 		// Split up our string into "possible" SQL statements.
 		$tokens = explode( ";", $sql);
@@ -528,7 +528,7 @@ class Backup
 	 * 	 
 	 * taken from phpBB
 	 */	 
-	function _evenNumberOfQuotes($text) {
+	private function _evenNumberOfQuotes($text) {
 			// This is the total number of single quotes in the token.
 			$total_quotes = preg_match_all("/'/", $text, $matches);
 			// Counts single quotes that are preceded by an odd number of backslashes,
@@ -541,5 +541,3 @@ class Backup
 	}
 
 }
-
-?>

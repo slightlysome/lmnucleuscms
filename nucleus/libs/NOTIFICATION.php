@@ -20,21 +20,21 @@
 class NOTIFICATION {
 
 	// array of addresses that need to get a notification
-	var $addresses = array();
+	public $addresses = array();
 
 	/**
 	  * takes one string as argument, containing multiple e-mail addresses
 	  * separated by semicolons
 	  * eg: site@demuynck.org;nucleus@demuynck.org;foo@bar.com
 	  */
-	function NOTIFICATION($addresses) {
+	public function NOTIFICATION($addresses) {
 		$this->addresses = explode(';' , $addresses);
 	}
 
 	/**
 	  * returns true if all addresses are valid
 	  */
-	function validAddresses() {
+	public function validAddresses() {
 		foreach ( $this->addresses as $address ) {
 			if (!isValidMailAddress(trim($address)))
 				return 0;
@@ -45,7 +45,7 @@ class NOTIFICATION {
 	/**
 	  * Sends email messages to all the email addresses
 	  */
-	function notify($title, $message, $from) {
+	public function notify($title, $message, $from) {
 		global $member;
 
 		foreach ( $this->addresses as $address ) {
@@ -62,5 +62,3 @@ class NOTIFICATION {
 		}
 	}
 }
-
-?>
