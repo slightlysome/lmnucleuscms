@@ -493,7 +493,7 @@ class ACTIONS extends BaseActions {
 	  * @access public
 	  */
 	public function parse_archivedate($locale = '-def-') {
-		global $archive;
+		global $archive, $template;
 
 		if ($locale == '-def-')
 			setlocale(LC_TIME,$template['LOCALE']);
