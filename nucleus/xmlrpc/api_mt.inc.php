@@ -421,7 +421,3 @@
 		return new xmlrpcresp(new xmlrpcval( $structarray , "array"));
 
 	}
-
-
-
-?>

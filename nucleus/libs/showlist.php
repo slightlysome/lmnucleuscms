@@ -403,13 +403,13 @@ function listplug_table_commentlist($template, $type) {
 			else
 				echo htmlspecialchars($current->cuser,ENT_QUOTES,_CHARSET);
 			if ($current->cmail != '') {
-                                echo '<br />';
-                                echo htmlspecialchars($current->cmail,ENT_QUOTES,_CHARSET);
-                        }
+								echo '<br />';
+								echo htmlspecialchars($current->cmail,ENT_QUOTES,_CHARSET);
+						}
 			if ($current->cemail != '') {
-                                echo '<br />';
-                                echo htmlspecialchars($current->cemail,ENT_QUOTES,_CHARSET);
-                        }
+								echo '<br />';
+								echo htmlspecialchars($current->cemail,ENT_QUOTES,_CHARSET);
+						}
 			echo '</td>';
 
 			$current->cbody = strip_tags($current->cbody);
@@ -682,5 +682,3 @@ function listplug_table_banlist($template, $type) {
 			break;
 	}
 }
-
-?>

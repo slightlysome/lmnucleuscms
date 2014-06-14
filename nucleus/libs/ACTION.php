@@ -21,18 +21,20 @@ class ACTION
 {
 
 	/**
-	 *  Constructor for an new ACTION object
+	 * Constructor for an new ACTION object
+	 * @access public
 	 */
-	function ACTION()
+	public function ACTION()
 	{
 		// do nothing
 	}
 
 
 	/**
-	 *  Calls functions that handle an action called from action.php
+	 * Calls functions that handle an action called from action.php
+	 * @access public
 	 */
-	function doAction($action)
+	public function doAction($action)
 	{
 		switch($action)
 		{
@@ -80,9 +82,10 @@ class ACTION
 
 
 	/**
-	 *  Adds a new comment to an item (if IP isn't banned)
+	 * Adds a new comment to an item (if IP isn't banned)
+	 * @access public
 	 */
-	function addComment()
+	public function addComment()
 	{
 		global $CONF, $errormessage, $manager;
 
@@ -143,9 +146,10 @@ class ACTION
 
 
 	/**
-	 *  Sends a message from the current member to the member given as argument
+	 * Sends a message from the current member to the member given as argument
+	 * @access public
 	 */
-	function sendMessage()
+	public function sendMessage()
 	{
 		global $CONF, $member;
 
@@ -204,10 +208,11 @@ class ACTION
 
 
 	/**
-	 *  Checks if a mail to a member is allowed
-	 *  Returns a string with the error message if the mail is disallowed
+	 * Checks if a mail to a member is allowed
+	 * Returns a string with the error message if the mail is disallowed
+	 * @access public
 	 */
-	function validateMessage()
+	public function validateMessage()
 	{
 		global $CONF, $member, $manager;
 
@@ -238,9 +243,10 @@ class ACTION
 
 
 	/**
-	 *  Creates a new user account
+	 * Creates a new user account
+	 * @access public
 	 */
-	function createAccount()
+	public function createAccount()
 	{
 		global $CONF, $manager;
 
@@ -300,9 +306,10 @@ class ACTION
 
 
 	/**
-	 *  Sends a new password
+	 * Sends a new password
+	 * @access public
 	 */
-	function forgotPassword()
+	public function forgotPassword()
 	{
 		$membername = trim(postVar('name') );
 
@@ -314,7 +321,7 @@ class ACTION
 		$mem = MEMBER::createFromName($membername);
 		
 		/* below keeps regular users from resetting passwords using forgot password feature
-		     Removing for now until clear why it is required.*/
+			 Removing for now until clear why it is required.*/
 		/*if (!$mem->canLogin())
 			doError(_ERROR_NOLOGON_NOACTIVATE);*/
 
@@ -342,9 +349,10 @@ class ACTION
 
 
 	/**
-	 *  Handle karma votes
+	 * Handle karma votes
+	 * @access public
 	 */
-	function doKarma($type)
+	public function doKarma($type)
 	{
 		global $itemid, $member, $CONF, $manager;
 
@@ -444,9 +452,10 @@ class ACTION
 
 
 	/**
-	  * Calls a plugin action
-	  */
-	function callPlugin()
+	 * Calls a plugin action
+	 * @access public
+	 */
+	public function callPlugin()
 	{
 		global $manager;
 
@@ -485,9 +494,10 @@ class ACTION
 
 
 	/**
-	 *  Checks if an IP or IP range is banned
+	 * Checks if an IP or IP range is banned
+	 * @access public
 	 */
-	function checkban($blogid)
+	public function checkban($blogid)
 	{
 		// check if banned
 		$ban = BAN::isBanned($blogid, serverVar('REMOTE_ADDR') );
@@ -502,8 +512,9 @@ class ACTION
 
 	/**
 	 * Gets a new ticket
+	 * @access public
 	 */
-	function updateTicket()
+	public function updateTicket()
 	{
 		global $manager;
 
@@ -513,7 +524,7 @@ class ACTION
 		}
 		else
 		{
-            echo _ERROR . ':' . _ERROR_BADTICKET;
+			echo _ERROR . ':' . _ERROR_BADTICKET;
 		}
 
 		return FALSE;
@@ -522,8 +533,9 @@ class ACTION
 
 	/**
 	 * Handles AutoSaveDraft
+	 * @access public
 	 */
-	function autoDraft()
+	public function autoDraft()
 	{
 		global $manager;
 
@@ -543,12 +555,10 @@ class ACTION
 		}
 		else
 		{
-            echo _ERROR . ':' . _ERROR_BADTICKET;
+			echo _ERROR . ':' . _ERROR_BADTICKET;
 		}
 
 		return FALSE;
 	}
 
 }
-
-?>

@@ -433,5 +433,3 @@ function media_foot() {
 	</body>
 	</html>
 <?php }
-
-?>

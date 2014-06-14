@@ -23,7 +23,7 @@ class entity {
 		return $string;
 	}
  
- 	/**
+	/**
 	 * @static
 	 * @todo document this
 	 */
@@ -66,7 +66,7 @@ class entity {
 	}
 	
 
- 	/**
+	/**
 	 * @static
 	 * @todo document this
 	 */
@@ -90,7 +90,7 @@ class entity {
 		return $str;
 	} 		
 
- 	/**
+	/**
 	 * @static
 	 * @todo document this
 	 */
@@ -209,6 +209,3 @@ $_entities['named'] = array (
 	'&loz'			=> '&#9674', 	'&spades'		=> '&#9824', 	'&clubs'		=> '&#9827', 	
 	'&hearts'		=> '&#9829', 	'&diams'		=> '&#9830', 	
 );
-
-
-?>

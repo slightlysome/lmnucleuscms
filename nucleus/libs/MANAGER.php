@@ -32,12 +32,12 @@ class MANAGER {
 	 * The $items, $blogs, ... arrays map an id to an object (for plugins, the name is used
 	 * rather than an ID)
 	 */
-	var $items;
-	var $blogs;
-	var $plugins;
-	var $karma;
-	var $templates;
-	var $members;
+	public $items;
+	public $blogs;
+	public $plugins;
+	public $karma;
+	public $templates;
+	public $members;
 
 	/**
 	 * cachedInfo to avoid repeated SQL queries (see pidInstalled/pluginInstalled/getPidFromName)
@@ -45,7 +45,7 @@ class MANAGER {
 	 *
 	 * $cachedInfo['installedPlugins'] = array($pid -> $name)
 	 */
-	var $cachedInfo;
+	public $cachedInfo;
 
 	/**
 	  * The plugin subscriptionlist
@@ -54,7 +54,7 @@ class MANAGER {
 	  *		$subscriptions[$EventName] = array containing names of plugin classes to be
 	  *									 notified when that event happens
 	  */
-	var $subscriptions;
+	public $subscriptions;
 
 	/**
 	  * Returns the only instance of this class. Creates the instance if it
@@ -74,7 +74,7 @@ class MANAGER {
 	/**
 	  * The constructor of this class initializes the object caches
 	  */
-	function MANAGER() {
+	public function MANAGER() {
 		$this->items = array();
 		$this->blogs = array();
 		$this->plugins = array();
@@ -88,7 +88,7 @@ class MANAGER {
 	  * first be loaded and then placed in the cache.
 	  * Intended use: $item =& $manager->getItem(1234)
 	  */
-	function &getItem($itemid, $allowdraft, $allowfuture) {
+	public function &getItem($itemid, $allowdraft, $allowfuture) {
 		$item =& $this->items[$itemid];
 
 		// check the draft and future rules if the item was already cached
@@ -113,14 +113,14 @@ class MANAGER {
 	/**
 	  * Loads a class if it has not yet been loaded
 	  */
-	function loadClass($name) {
+	public function loadClass($name) {
 		$this->_loadClass($name, $name . '.php');
 	}
 
 	/**
 	  * Checks if an item exists
 	  */
-	function existsItem($id,$future,$draft) {
+	public function existsItem($id,$future,$draft) {
 		$this->_loadClass('ITEM','ITEM.php');
 		return ITEM::exists($id,$future,$draft);
 	}
@@ -128,14 +128,14 @@ class MANAGER {
 	/**
 	  * Checks if a category exists
 	  */
-	function existsCategory($id) {
+	public function existsCategory($id) {
 		return (quickQuery('SELECT COUNT(*) as result FROM '.sql_table('category').' WHERE catid='.intval($id)) > 0);
 	}
 
 	/**
 	  * Returns the blog object for a given blogid
 	  */
-	function &getBlog($blogid) {
+	public function &getBlog($blogid) {
 		$blog =& $this->blogs[$blogid];
 
 		if (!$blog) {
@@ -151,7 +151,7 @@ class MANAGER {
 	/**
 	  * Checks if a blog exists
 	  */
-	function existsBlog($name) {
+	public function existsBlog($name) {
 		$this->_loadClass('BLOG','BLOG.php');
 		return BLOG::exists($name);
 	}
@@ -159,7 +159,7 @@ class MANAGER {
 	/**
 	  * Checks if a blog id exists
 	  */
-	function existsBlogID($id) {
+	public function existsBlogID($id) {
 		$this->_loadClass('BLOG','BLOG.php');
 		return BLOG::existsID($id);
 	}
@@ -167,7 +167,7 @@ class MANAGER {
 	/**
 	 * Returns a previously read template
 	 */
-	function &getTemplate($templateName) {
+	public function &getTemplate($templateName) {
 		$template =& $this->templates[$templateName];
 
 		if (!$template) {
@@ -180,7 +180,7 @@ class MANAGER {
 	/**
 	 * Returns a KARMA object (karma votes)
 	 */
-	function &getKarma($itemid) {
+	public function &getKarma($itemid) {
 		$karma =& $this->karma[$itemid];
 
 		if (!$karma) {
@@ -196,7 +196,7 @@ class MANAGER {
 	/**
 	 * Returns a MEMBER object
 	 */
-	function &getMember($memberid) {
+	public function &getMember($memberid) {
 		$mem =& $this->members[$memberid];
 
 		if (!$mem) {
@@ -212,14 +212,14 @@ class MANAGER {
 	/**
 	 * Set the global parser preferences
 	 */
-	function setParserProperty($name, $value) {
+	public function setParserProperty($name, $value) {
 		$this->parserPrefs[$name] = $value;
 	}
 	
 	/**
 	 * Get the global parser preferences
 	 */
-	function getParserProperty($name) {
+	public function getParserProperty($name) {
 		return $this->parserPrefs[$name];
 	}
 
@@ -228,7 +228,7 @@ class MANAGER {
 	  * 
 	  *	private
 	  */
-	function _loadClass($name, $filename) {
+	public function _loadClass($name, $filename) {
 		if (!class_exists($name)) {
 				global $DIR_LIBS;
 				include($DIR_LIBS . $filename);
@@ -240,7 +240,7 @@ class MANAGER {
 	  * 
 	  *	private
 	  */
-	function _loadPlugin($name) {
+	public function _loadPlugin($name) {
 		if (!class_exists($name)) {
 				global $DIR_PLUGINS;
 
@@ -249,9 +249,9 @@ class MANAGER {
 				if (!file_exists($fileName))
 				{
 					if (!defined('_MANAGER_PLUGINFILE_NOTFOUND')) {
-                        define('_MANAGER_PLUGINFILE_NOTFOUND', 'Plugin %s was not loaded (File not found)');
-                    }
-                    ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name)); 
+						define('_MANAGER_PLUGINFILE_NOTFOUND', 'Plugin %s was not loaded (File not found)');
+					}
+					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name)); 
 					return 0;
 				}
 
@@ -298,7 +298,7 @@ class MANAGER {
 	/**
 	 * Returns a PLUGIN object
 	 */
-	function &getPlugin($name) {
+	public function &getPlugin($name) {
 		// retrieve the name of the plugin in the right capitalisation
 		$name = $this->getUpperCaseName ($name);
 		// get the plugin	
@@ -315,12 +315,12 @@ class MANAGER {
 	/**
 	  * Checks if the given plugin IS loaded or not
 	  */
-	function &pluginLoaded($name) {
+	public function &pluginLoaded($name) {
 		$plugin =& $this->plugins[$name];
 		return $plugin;
 	}
 		
-	function &pidLoaded($pid) {
+	public function &pidLoaded($pid) {
 		$plugin=false;
 		reset($this->plugins);
 		while (list($name) = each($this->plugins)) {
@@ -334,17 +334,17 @@ class MANAGER {
 	/**
 	  * checks if the given plugin IS installed or not
 	  */
-	function pluginInstalled($name) {
+	public function pluginInstalled($name) {
 		$this->_initCacheInfo('installedPlugins');
 		return ($this->getPidFromName($name) != -1);
 	}
 
-	function pidInstalled($pid) {
+	public function pidInstalled($pid) {
 		$this->_initCacheInfo('installedPlugins');
 		return ($this->cachedInfo['installedPlugins'][$pid] != '');
 	}
 
-	function getPidFromName($name) {
+	public function getPidFromName($name) {
 		$this->_initCacheInfo('installedPlugins');
 		foreach ($this->cachedInfo['installedPlugins'] as $pid => $pfile)
 		{
@@ -357,7 +357,7 @@ class MANAGER {
 	/**
 	  * Retrieve the name of a plugin in the right capitalisation
 	  */
-	function getUpperCaseName ($name) {
+	public function getUpperCaseName ($name) {
 		$this->_initCacheInfo('installedPlugins');
 		foreach ($this->cachedInfo['installedPlugins'] as $pid => $pfile)
 		{
@@ -367,14 +367,14 @@ class MANAGER {
 		return -1;
 	}
 	
-	function clearCachedInfo($what) {
+	public function clearCachedInfo($what) {
 		unset($this->cachedInfo[$what]);
 	}
 
 	/**
 	 * Loads some info on the first call only
 	 */
-	function _initCacheInfo($what)
+	public function _initCacheInfo($what)
 	{
 		if (isset($this->cachedInfo[$what]) && is_array($this->cachedInfo[$what]))
 			return;
@@ -404,7 +404,7 @@ class MANAGER {
 	  *		Can contain any type of data, depending on the event type. Usually this is
 	  *		an itemid, blogid, ... but it can also be an array containing multiple values
 	  */
-	function notify($eventName, &$data) {
+	public function notify($eventName, &$data) {
 		// load subscription list if needed
 		if (!is_array($this->subscriptions))
 			$this->_loadSubscriptions();
@@ -432,7 +432,7 @@ class MANAGER {
 	/**
 	  * Loads plugin subscriptions
 	  */
-	function _loadSubscriptions() {
+	public function _loadSubscriptions() {
 		// initialize as array
 		$this->subscriptions = array();
 
@@ -450,12 +450,12 @@ class MANAGER {
 		requests. tickets are user specific
 	*/
 
-	var $currentRequestTicket = '';
+	public $currentRequestTicket = '';
 
 	/**
 	 * GET requests: Adds ticket to URL (URL should NOT be html-encoded!, ticket is added at the end)
 	 */
-	function addTicketToUrl($url)
+	public function addTicketToUrl($url)
 	{
 		$ticketCode = 'ticket=' . $this->_generateTicket();
 		if (strstr($url, '?'))
@@ -467,7 +467,7 @@ class MANAGER {
 	/**
 	 * POST requests: Adds ticket as hidden formvar
 	 */
-	function addTicketHidden()
+	public function addTicketHidden()
 	{
 		$ticket = $this->_generateTicket();
 
@@ -478,7 +478,7 @@ class MANAGER {
 	 * Get a new ticket
 	 * (xmlHTTPRequest AutoSaveDraft uses this to refresh the ticket)
 	 */
-	function getNewTicket()
+	public function getNewTicket()
 	{
 		$this->currentRequestTicket = '';
 		return $this->_generateTicket();
@@ -487,7 +487,7 @@ class MANAGER {
 	/**
 	 * Checks the ticket that was passed along with the current request
 	 */
-	function checkTicket()
+	public function checkTicket()
 	{
 		global $member;
 
@@ -528,7 +528,7 @@ class MANAGER {
 	/**
 	 * (internal method) Removes the expired tickets
 	 */
-	function _cleanUpExpiredTickets()
+	private function _cleanUpExpiredTickets()
 	{
 		// remove tickets older than 1 hour
 		$oldTime = time() - 60 * 60;
@@ -539,7 +539,7 @@ class MANAGER {
 	/**
 	 * (internal method) Generates/returns a ticket (one ticket per page request)
 	 */
-	function _generateTicket()
+	private function _generateTicket()
 	{
 		if ($this->currentRequestTicket == '')
 		{
@@ -572,5 +572,3 @@ class MANAGER {
 	}
 
 }
-
-?>

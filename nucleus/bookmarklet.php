@@ -333,5 +333,3 @@ wingm.focus();
 </script>
 	<?php
 }
-
-?>

@@ -23,15 +23,15 @@ require_once dirname(__FILE__) . '/ACTIONS.php';
 class SKIN {
 
 	// after creating a SKIN object, evaluates to true when the skin exists
-	var $isValid;
+	public $isValid;
 
 	// skin characteristics. Use the getXXX methods rather than accessing directly
-	var $id;
-	var $description;
-	var $contentType;
-	var $includeMode;		// either 'normal' or 'skindir'
-	var $includePrefix;
-	var $name;
+	public $id;
+	public $description;
+	public $contentType;
+	public $includeMode;		// either 'normal' or 'skindir'
+	public $includePrefix;
+	public $name;
 
 	/**
 	 * Constructor for a new SKIN object
@@ -39,7 +39,7 @@ class SKIN {
 	 * @param $id 
 	 * 			id of the skin
 	 */
-	function SKIN($id) {
+	public function SKIN($id) {
 		$this->id = intval($id);
 
 		// read skin name/description/content type
@@ -60,21 +60,21 @@ class SKIN {
 	/**
 	 * Get SKIN id
 	 */
-	function getID() {
+	public function getID() {
 		return $this->id;
 	}
 
 	/**
 	 * Get SKIN name
 	 */
-	function getName() {
+	public function getName() {
 		return $this->name;
 	}
 	
 	/**
 	 * Get SKIN description
 	 */
-	function getDescription() {
+	public function getDescription() {
 		return $this->description;
 	}
 	
@@ -83,7 +83,7 @@ class SKIN {
 	 * 
 	 * e.g. text/xml, text/html, application/atom+xml
 	 */
-	function getContentType() {
+	public function getContentType() {
 		return $this->contentType;
 	}
 	
@@ -94,7 +94,7 @@ class SKIN {
 	 * 'normal': if a all data of the skin can be found in the databse
 	 * 'skindir': if the skin has data in the it's skin driectory
 	 */
-	function getIncludeMode() {
+	public function getIncludeMode() {
 		return $this->includeMode;
 	}
 	
@@ -104,7 +104,7 @@ class SKIN {
 	 * Get name of the subdirectory (with trailing slash) where
 	 * the files of the current skin can be found (e.g. 'default/')
 	 */
-	function getIncludePrefix() {
+	public function getIncludePrefix() {
 		return $this->includePrefix;
 	}
 
@@ -201,7 +201,7 @@ class SKIN {
 	 * 
 	 * @param string $type
 	 */
-	function parse($type) {
+	public function parse($type) {
 		global $manager, $CONF;
 
 		$data = array(
@@ -262,7 +262,7 @@ class SKIN {
 	 * 
 	 * @param $type type of the skin (e.g. index, item, search ...)
 	 */
-	function getContent($type) {
+	public function getContent($type) {
 		$query = 'SELECT scontent FROM '.sql_table('skin')." WHERE sdesc=$this->id and stype='". sql_real_escape_string($type) ."'";
 		$res = sql_query($query);
 
@@ -278,7 +278,7 @@ class SKIN {
 	 * @param $type type of the skin part (e.g. index, item, search ...) 
 	 * @param $content new content for this skin part
 	 */
-	function update($type, $content) {
+	public function update($type, $content) {
 		$skinid = $this->id;
 
 		// delete old thingie
@@ -293,14 +293,14 @@ class SKIN {
 	/**
 	 * Deletes all skin parts from the database
 	 */
-	function deleteAllParts() {
+	public function deleteAllParts() {
 		sql_query('DELETE FROM '.sql_table('skin').' WHERE sdesc='.$this->getID());
 	}
 
 	/**
 	 * Updates the general information about the skin
 	 */
-	function updateGeneralInfo($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
+	public function updateGeneralInfo($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
 		$query =  'UPDATE '.sql_table('skin_desc').' SET'
 			   . " sdname='" . sql_real_escape_string($name) . "',"
 			   . " sddesc='" . sql_real_escape_string($desc) . "',"
@@ -509,5 +509,3 @@ class SKIN {
 	}
 
 }
-
-?>

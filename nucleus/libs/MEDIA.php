@@ -133,7 +133,7 @@ class MEDIA {
 
 		// other collections should exist
 		return @is_dir($collectionDir);
-       }
+	   }
 
 	/**
 	  * Adds an uploaded file to the media archive
@@ -290,12 +290,12 @@ class MEDIA {
   */
 class MEDIAOBJECT {
 
-	var $private;
-	var $collection;
-	var $filename;
-	var $timestamp;
+	public $private;
+	public $collection;
+	public $filename;
+	public $timestamp;
 
-	function MEDIAOBJECT($collection, $filename, $timestamp) {
+	public function MEDIAOBJECT($collection, $filename, $timestamp) {
 		$this->private = is_numeric($collection);
 		$this->collection = $collection;
 		$this->filename = $filename;
@@ -311,5 +311,3 @@ function sort_media($a, $b) {
 	if ($a->timestamp == $b->timestamp) return 0;
 	return ($a->timestamp > $b->timestamp) ? -1 : 1;
 }
-
-?>

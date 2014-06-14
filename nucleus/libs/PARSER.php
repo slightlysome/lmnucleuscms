@@ -25,19 +25,19 @@ require_once dirname(__FILE__) . '/BaseActions.php';
 class PARSER {
 
 	// array with the names of all allowed actions
-	var $actions;
+	public $actions;
 
 	// reference to actions handler
-	var $handler;
+	public $handler;
 
 	// delimiters that can be used for skin/templatevars
-	var $delim;
+	public $delim;
 
 	// parameter delimiter (to separate skinvar params)
-	var $pdelim;
+	public $pdelim;
 
 	// usually set to 0. When set to 1, all skinvars are allowed regardless of $actions
-	var $norestrictions;
+	public $norestrictions;
 
 	/**
 	 * Creates a new parser object with the given allowed actions
@@ -48,7 +48,7 @@ class PARSER {
 	 * @param $delim optional delimiter
 	 * @param $paramdelim optional parameterdelimiter
 	 */
-	function PARSER($allowedActions, &$handler, $delim = '(<%|%>)', $pdelim = ',') {
+	public function PARSER($allowedActions, &$handler, $delim = '(<%|%>)', $pdelim = ',') {
 		$this->actions = $allowedActions;
 		$this->handler =& $handler;
 		$this->delim = $delim;
@@ -59,7 +59,7 @@ class PARSER {
 	/**
 	 * Parses the given contents and outputs it
 	 */
-	function parse(&$contents) {
+	public function parse(&$contents) {
 
 		$pieces = preg_split('/'.$this->delim.'/',$contents);
 
@@ -79,7 +79,7 @@ class PARSER {
 	  * 
 	  * @param $action name of the action (e.g. blog, image ...)
 	  */
-	function doAction($action) {
+	public function doAction($action) {
 		global $manager, $CONF;
 
 		if (!$action) return;
@@ -148,7 +148,4 @@ class PARSER {
 		return $manager->getParserProperty($name);
 	}
 
-
 }
-
-?>

@@ -19,13 +19,13 @@
  */
 class TEMPLATE {
 
-	var $id;
+	public $id;
 
-	function TEMPLATE($templateid) {
+	public function TEMPLATE($templateid) {
 		$this->id = intval($templateid);
 	}
 
-	function getID() {
+	public function getID() {
 		return intval($this->id);
 	}
 
@@ -53,7 +53,7 @@ class TEMPLATE {
 	/**
 	 * Updates the general information about the template
 	 */
-	function updateGeneralInfo($name, $desc) {
+	public function updateGeneralInfo($name, $desc) {
 		$query =  'UPDATE '.sql_table('template_desc').' SET'
 			   . " tdname='" . sql_real_escape_string($name) . "',"
 			   . " tddesc='" . sql_real_escape_string($desc) . "'"
@@ -64,7 +64,7 @@ class TEMPLATE {
 	/**
 	 * Updates the contents of one part of the template
 	 */
-	function update($type, $content) {
+	public function update($type, $content) {
 		$id = $this->getID();
 
 		// delete old thingie
@@ -80,7 +80,7 @@ class TEMPLATE {
 	/**
 	 * Deletes all template parts from the database
 	 */
-	function deleteAllParts() {
+	public function deleteAllParts() {
 		sql_query('DELETE FROM '.sql_table('template').' WHERE tdesc='.$this->getID());
 	}
 
@@ -200,8 +200,4 @@ class TEMPLATE {
 		return $obj->tddesc;
 	}
 
-
-
 }
-
-?>

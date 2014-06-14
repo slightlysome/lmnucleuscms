@@ -27,7 +27,7 @@ class ENCAPSULATE {
 	  *
 	  * Passes on the amount of results found (for further encapsulation)
 	  */
-	function doEncapsulate(&$call, &$params, $errorMessage = _ENCAPSULATE_ENCAPSULATE_NOENTRY) {
+	protected function doEncapsulate(&$call, &$params, $errorMessage = _ENCAPSULATE_ENCAPSULATE_NOENTRY) {
 		// start output buffering
 		ob_start();
 
@@ -54,7 +54,7 @@ class ENCAPSULATE {
   */
 class NAVLIST extends ENCAPSULATE {
 
-	function NAVLIST($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
+	public function NAVLIST($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
 		$this->action = $action;
 		$this->start = $start;
 		$this->amount = $amount;
@@ -65,7 +65,7 @@ class NAVLIST extends ENCAPSULATE {
 		$this->itemid = $itemid;
 	}
 
-	function showBatchList($batchtype, &$query, $type, $template, $errorMessage = _LISTS_NOMORE)
+	public function showBatchList($batchtype, &$query, $type, $template, $errorMessage = _LISTS_NOMORE)
 	{
 		$batch = new BATCH($batchtype);
 		$call = array($batch, 'showlist');
@@ -74,17 +74,17 @@ class NAVLIST extends ENCAPSULATE {
 	}
 
 
-	function showHead() {
+	public function showHead() {
 		$this->showNavigation();
 	}
-	function showFoot() {
+	public function showFoot() {
 		$this->showNavigation();
 	}
 
 	/**
 	  * Displays a next/prev bar for long tables
 	  */
-	function showNavigation() {
+	public function showNavigation() {
 		$action = $this->action;
 		$start = $this->start;
 		$amount = $this->amount;
@@ -157,11 +157,11 @@ class NAVLIST extends ENCAPSULATE {
  * A class used to encapsulate a list of some sort in a batch selection
  */
 class BATCH extends ENCAPSULATE {
-	function BATCH($type) {
+	public function BATCH($type) {
 		$this->type = $type;
 	}
 
-	function showHead() {
+	public function showHead() {
 		?>
 			<form method="post" action="index.php">
 		<?php
@@ -170,13 +170,13 @@ class BATCH extends ENCAPSULATE {
 //		$this->showOperationList();
 	}
 
-	function showFoot() {
+	public function showFoot() {
 		$this->showOperationList();
 		?>
 			</form>
 		<?php	}
 
-	function showOperationList() {
+	public function showOperationList() {
 		global $manager;
 		?>
 		<div class="batchoperations">
@@ -244,11 +244,10 @@ class BATCH extends ENCAPSULATE {
 		<?php	}
 
 	// shortcut :)
-	function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE)
+	public function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE)
 	{
 		$call = 'showlist';
 		$params = array($query, $type, $template);
 		return $this->doEncapsulate($call, $params, $errorMessage);
 	}
 }
-?>

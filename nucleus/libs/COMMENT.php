@@ -61,7 +61,7 @@ class COMMENT {
 			$comment['userid'] = 'http://' . $comment['userid'];
 		} // end if
 
-		$comment['body'] = COMMENT::prepareBody($comment['body']);
+		$comment['body'] = self::prepareBody($comment['body']);
 
 		return $comment;
 	}
@@ -200,5 +200,3 @@ class COMMENT {
 	}
 
 }
-
-?>

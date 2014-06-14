@@ -26,6 +26,7 @@ class ACTIONLOG {
 
 	/**
 	 * Method to add a message to the action log
+	 * @access public
 	 * @static
 	 */
 	public static function add($level, $message) {
@@ -48,6 +49,7 @@ class ACTIONLOG {
 
 	/**
 	 * Method to clear the whole action log
+	 * @access public
 	 * @static
 	 */
 	public static function clear() {
@@ -63,6 +65,7 @@ class ACTIONLOG {
 
 	/**
 	 * Method to trim the action log (from over 500 back to 250 entries)
+	 * @access public
 	 * @static
 	 */
 	public static function trimLog() {
@@ -87,5 +90,3 @@ class ACTIONLOG {
 	}
 
 }
-
-?>

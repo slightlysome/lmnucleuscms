@@ -47,5 +47,3 @@ if (!$CONF['DisableSite']) {
 	}
 
 }
-
-?>

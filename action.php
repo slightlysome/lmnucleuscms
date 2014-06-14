@@ -32,5 +32,3 @@ $errorInfo = $a->doAction($action);
 if ($errorInfo) {
 	doError($errorInfo['message'], new SKIN($errorInfo['skinid']) );
 }
-
-?>

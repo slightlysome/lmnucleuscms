@@ -100,14 +100,11 @@ class BAN {
 }
 
 class BANINFO {
-	var $iprange;
-	var $message;
+	public $iprange;
+	public $message;
 
-	function BANINFO($iprange, $message) {
+	public function BANINFO($iprange, $message) {
 		$this->iprange = $iprange;
 		$this->message = $message;
 	}
 }
-
-
-?>

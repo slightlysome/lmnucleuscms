@@ -19,14 +19,14 @@
  */
 class ITEM {
 
-	var $itemid;
+	public $itemid;
 
 	/**
 	  * Constructor of an ITEM object
 	  * 
 	  * @param integer $itemid id of the item
 	  */
-	function ITEM($itemid) {
+	public function ITEM($itemid) {
 		$this->itemid = $itemid;
 	}
 
@@ -498,5 +498,3 @@ class ITEM {
 	}
 
 }
-
-?>
