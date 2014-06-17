@@ -73,4 +73,3 @@
 
 	$admin = new ADMIN();
 	$admin->action($action);
-?>

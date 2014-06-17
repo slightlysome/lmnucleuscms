@@ -20,14 +20,14 @@
 
 class BODYACTIONS extends BaseActions {
 
-	var $currentItem;
+	public $currentItem;
 
-	var $template;
+	public $template;
 
 	/**
 	 * Constructor of the BODYACTIONS
 	 */
-	function BODYACTIONS () {
+	public function BODYACTIONS () {
 		$this->BaseActions();	
 	}
 
@@ -37,7 +37,7 @@ class BODYACTIONS extends BaseActions {
 	 * @param &$item
 	 * 			reference to the current item
 	 */
-	function setCurrentItem(&$item) {
+	public function setCurrentItem(&$item) {
 		$this->currentItem =& $item;
 		global $currentitemid;
 		$currentitemid = $this->currentItem->itemid;
@@ -49,14 +49,14 @@ class BODYACTIONS extends BaseActions {
 	 * @param $template
 	 * 			Template to be used
 	 */
-	function setTemplate($template) {
+	public function setTemplate($template) {
 		$this->template =& $template;
 	}
 
 	/**
 	 * Get the defined actions in an item
 	 */
-	function getDefinedActions() {
+	public function getDefinedActions() {
 		return array('image', 'media', 'popup', 'plugin', 'if', 'else', 'endif', 'elseif', 'ifnot', 'elseifnot');
 	}
 
@@ -66,7 +66,7 @@ class BODYACTIONS extends BaseActions {
 	 * 
 	 * Calls the doItemVar function in the plugin
 	 */
-	function parse_plugin($pluginName) {
+	public function parse_plugin($pluginName) {
 		global $manager;
 
 		// should be already tested from the parser (PARSER.php)
@@ -94,7 +94,7 @@ class BODYACTIONS extends BaseActions {
 	 * Parse image
 	 * Called if <%image(...)%> in an item appears
 	 */
-	function parse_image() {
+	public function parse_image() {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
 		$args = explode('|',implode($args,', '));
@@ -104,7 +104,7 @@ class BODYACTIONS extends BaseActions {
 	/**
 	 * Creates the code for an image
 	 */
-	function createImageCode($filename, $width, $height, $text = '') {
+	public function createImageCode($filename, $width, $height, $text = '') {
 		global $CONF;
 
 		// select private collection when no collection given
@@ -131,7 +131,7 @@ class BODYACTIONS extends BaseActions {
 	 * Parse media
 	 * Called if <%media(...)%> in an item appears
 	 */
-	function parse_media() {
+	public function parse_media() {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
 		$args = explode('|',implode($args,', '));
@@ -141,7 +141,7 @@ class BODYACTIONS extends BaseActions {
 	/**
 	 * Creates the code for a media
 	 */
-	function createMediaCode($filename, $text = '') {
+	public function createMediaCode($filename, $text = '') {
 		global $CONF;
 
 		// select private collection when no collection given
@@ -160,7 +160,7 @@ class BODYACTIONS extends BaseActions {
 	 * Parse popup
 	 * Called if <%popup(...)%> in an item appears
 	 */
-	function parse_popup() {
+	public function parse_popup() {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
 		$args = explode('|',implode($args,', '));
@@ -170,7 +170,7 @@ class BODYACTIONS extends BaseActions {
 	/**
 	 * Creates the code for a popup
 	 */
-	function createPopupCode($filename, $width, $height, $text = '') {
+	public function createPopupCode($filename, $width, $height, $text = '') {
 		global $CONF;
 
 		// select private collection when no collection given
@@ -203,7 +203,7 @@ class BODYACTIONS extends BaseActions {
 	 * @param string $name property of field
 	 * @param string $value value of property
 	 */
-	function checkCondition($field, $name='', $value = '') {
+	public function checkCondition($field, $name='', $value = '') {
 		global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
 
 		$condition = 0;
@@ -261,7 +261,7 @@ class BODYACTIONS extends BaseActions {
 	/**
 	 *  Different checks for a category
 	 */
-	function _ifCategory($name = '', $value='') {
+	private function _ifCategory($name = '', $value='') {
 		global $blog, $catid;
 
 		// when no parameter is defined, just check if a category is selected
@@ -286,7 +286,7 @@ class BODYACTIONS extends BaseActions {
 	/**
 	 *  Different checks for an author
 	 */
-	function _ifAuthor($name = '', $value='') {
+	private function _ifAuthor($name = '', $value='') {
 		global $member, $manager;
 		
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
@@ -320,7 +320,7 @@ class BODYACTIONS extends BaseActions {
 	/**
 	 *  Different checks for a category
 	 */
-	function _ifItemCategory($name = '', $value='') {
+	private function _ifItemCategory($name = '', $value='') {
 		global $catid, $manager;
 		
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
@@ -350,7 +350,7 @@ class BODYACTIONS extends BaseActions {
 	/**
 	 *  Checks if a member is on the team of a blog and return his rights
 	 */
-	function _ifOnTeam($blogName = '') {
+	private function _ifOnTeam($blogName = '') {
 		global $blog, $member, $manager;
 
 		// when no blog found
@@ -371,7 +371,7 @@ class BODYACTIONS extends BaseActions {
 	/**
 	 *  Checks if a member is admin of a blog
 	 */
-	function _ifAdmin($blogName = '') {
+	private function _ifAdmin($blogName = '') {
 		global $blog, $member, $manager;
 
 		// when no blog found
@@ -398,7 +398,7 @@ class BODYACTIONS extends BaseActions {
 	 *	hasplugin,PlugName,OptionName=value
 	 *	   -> checks if the option OptionName from plugin PlugName is set to value
 	 */
-	function _ifHasPlugin($name, $value) {
+	private function _ifHasPlugin($name, $value) {
 		global $manager;
 		$condition = false;
 		// (pluginInstalled method won't write a message in the actionlog on failure)
@@ -423,7 +423,7 @@ class BODYACTIONS extends BaseActions {
 	/**
 	 * Checks if a plugin exists and call its doIf function
 	 */
-	function _ifPlugin($name, $key = '', $value = '') {
+	private function _ifPlugin($name, $key = '', $value = '') {
 		global $manager;
 
 		$plugin =& $manager->getPlugin('NP_' . $name);
@@ -436,4 +436,3 @@ class BODYACTIONS extends BaseActions {
 	}
 
 }
-?>

@@ -19,16 +19,16 @@
 class KARMA {
 
 	// id of item about which this object contains information
-	var $itemid;
+	public $itemid;
 
 	// indicates if the karma vote info has already been intialized from the DB
-	var $inforead;
+	public $inforead;
 
 	// amount of positive/negative votes
-	var $karmapos;
-	var $karmaneg;
+	public $karmapos;
+	public $karmaneg;
 
-	function KARMA($itemid, $initpos = 0, $initneg = 0, $initread = 0) {
+	public function KARMA($itemid, $initpos = 0, $initneg = 0, $initread = 0) {
 		// itemid
 		$this->itemid = intval($itemid);
 
@@ -40,33 +40,33 @@ class KARMA {
 		$this->karmaneg = intval($initneg);
 	}
 
-	function getNbPosVotes() {
+	public function getNbPosVotes() {
 		if (!$this->inforead) $this->readFromDatabase();
 		return $this->karmapos;
 	}
-	function getNbNegVotes() {
+	public function getNbNegVotes() {
 		if (!$this->inforead) $this->readFromDatabase();
 		return $this->karmaneg;
 	}
-	function getNbOfVotes() {
+	public function getNbOfVotes() {
 		if (!$this->inforead) $this->readFromDatabase();
 		return ($this->karmapos + $this->karmaneg);
 	}
-	function getTotalScore() {
+	public function getTotalScore() {
 		if (!$this->inforead) $this->readFromDatabase();
 		return ($this->karmapos - $this->karmaneg);
 	}
 
-	function setNbPosVotes($val) {
+	public function setNbPosVotes($val) {
 		$this->karmapos = intval($val);
 	}
-	function setNbNegVotes($val) {
+	public function setNbNegVotes($val) {
 		$this->karmaneg = intval($val);
 	}
 
 
 	// adds a positive vote
-	function votePositive() {
+	public function votePositive() {
 		$newKarma = $this->getNbPosVotes() + 1;
 		$this->setNbPosVotes($newKarma);
 		$this->writeToDatabase();
@@ -74,7 +74,7 @@ class KARMA {
 	}
 
 	// adds a negative vote
-	function voteNegative() {
+	public function voteNegative() {
 		$newKarma = $this->getNbNegVotes() + 1;
 		$this->setNbNegVotes($newKarma);
 		$this->writeToDatabase();
@@ -84,7 +84,7 @@ class KARMA {
 
 
 	// these methods shouldn't be called directly
-	function readFromDatabase() {
+	public function readFromDatabase() {
 		$query = 'SELECT ikarmapos, ikarmaneg FROM '.sql_table('item').' WHERE inumber=' . $this->itemid;
 		$res = sql_query($query);
 		$obj = sql_fetch_object($res);
@@ -95,23 +95,21 @@ class KARMA {
 	}
 
 
-	function writeToDatabase() {
+	public function writeToDatabase() {
 		$query = 'UPDATE '.sql_table('item').' SET ikarmapos=' . $this->karmapos . ', ikarmaneg='.$this->karmaneg.' WHERE inumber=' . $this->itemid;
 		sql_query($query);
 	}
 
 	// checks if a vote is still allowed for an IP
-	function isVoteAllowed($ip) {
+	public function isVoteAllowed($ip) {
 		$query = 'SELECT * FROM '.sql_table('karma')." WHERE itemid=$this->itemid and ip='".sql_real_escape_string($ip)."'";
 		$res = sql_query($query);
 		return (sql_num_rows($res) == 0);
 	}
 
 	// save IP in database so no multiple votes are possible
-	function saveIP() {
+	public function saveIP() {
 		$query = 'INSERT INTO '.sql_table('karma').' (itemid, ip) VALUES ('.$this->itemid.",'".sql_real_escape_string(serverVar('REMOTE_ADDR'))."')";
 		sql_query($query);
 	}
 }
-
-?>

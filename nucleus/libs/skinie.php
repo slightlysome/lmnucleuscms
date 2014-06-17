@@ -22,37 +22,37 @@ class SKINIMPORT {
 
 	// hardcoded value (see constructor). When 1, interesting info about the
 	// parsing process is sent to the output
-	var $debug;
+	public $debug;
 
 	// parser/file pointer
-	var $parser;
-	var $fp;
+	public $parser;
+	public $fp;
 
 	// which data has been read?
-	var $metaDataRead;
-	var $allRead;
+	public $metaDataRead;
+	public $allRead;
 
 	// extracted data
-	var $skins;
-	var $templates;
-	var $info;
+	public $skins;
+	public $templates;
+	public $info;
 
 	// to maintain track of where we are inside the XML file
-	var $inXml;
-	var $inData;
-	var $inMeta;
-	var $inSkin;
-	var $inTemplate;
-	var $currentName;
-	var $currentPartName;
-	var $cdata;
+	public $inXml;
+	public $inData;
+	public $inMeta;
+	public $inSkin;
+	public $inTemplate;
+	public $currentName;
+	public $currentPartName;
+	public $cdata;
 
 
 
 	/**
 	 * constructor initializes data structures
 	 */
-	function SKINIMPORT() {
+	public function SKINIMPORT() {
 		// disable magic_quotes_runtime if it's turned on
 		set_magic_quotes_runtime(0);
 
@@ -63,7 +63,7 @@ class SKINIMPORT {
 
 	}
 
-	function reset() {
+	public function reset() {
 		if ($this->parser)
 			xml_parser_free($this->parser);
 
@@ -110,11 +110,11 @@ class SKINIMPORT {
 	 * @param $metaOnly
 	 *		Set to 1 when only the metadata needs to be read (optional, default 0)
 	 */
-	function readFile($filename, $metaOnly = 0) {
+	public function readFile($filename, $metaOnly = 0) {
 		// open file
 		$this->fp = @fopen($filename, 'r');
 		if (!$this->fp) {
-		    return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
+			return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
 		}
 
 		// here we go!
@@ -163,21 +163,21 @@ class SKINIMPORT {
 	/**
 	 * Returns the list of skin names
 	 */
-	function getSkinNames() {
+	public function getSkinNames() {
 		return array_keys($this->skins);
 	}
 
 	/**
 	 * Returns the list of template names
 	 */
-	function getTemplateNames() {
+	public function getTemplateNames() {
 		return array_keys($this->templates);
 	}
 
 	/**
 	 * Returns the extra information included in the XML file
 	 */
-	function getInfo() {
+	public function getInfo() {
 		return $this->info;
 	}
 
@@ -188,7 +188,7 @@ class SKINIMPORT {
 	 *		set to 1 when allowed to overwrite existing skins with the same name
 	 *		(default = 0)
 	 */
-	function writeToDatabase($allowOverwrite = 0) {
+	public function writeToDatabase($allowOverwrite = 0) {
 		$existingSkins = $this->checkSkinNameClashes();
 		$existingTemplates = $this->checkTemplateNameClashes();
 
@@ -210,19 +210,19 @@ class SKINIMPORT {
 
 				// update general info
 				$skinObj->updateGeneralInfo(
-				    $skinName,
-				    $data['description'],
-				    $data['type'],
-				    $data['includeMode'],
-				    $data['includePrefix']
+					$skinName,
+					$data['description'],
+					$data['type'],
+					$data['includeMode'],
+					$data['includePrefix']
 				);
 			} else {
 				$skinid = SKIN::createNew(
-				    $skinName,
-				    $data['description'],
-				    $data['type'],
-				    $data['includeMode'],
-				    $data['includePrefix']
+					$skinName,
+					$data['description'],
+					$data['type'],
+					$data['includeMode'],
+					$data['includePrefix']
 				);
 				$skinObj = new SKIN($skinid);
 			}
@@ -261,7 +261,7 @@ class SKINIMPORT {
 	/**
 	  * returns an array of all the skin nameclashes (empty array when no name clashes)
 	  */
-	function checkSkinNameClashes() {
+	public function checkSkinNameClashes() {
 		$clashes = array();
 
 		foreach ($this->skins as $skinName => $data) {
@@ -277,7 +277,7 @@ class SKINIMPORT {
 	  * returns an array of all the template nameclashes
 	  * (empty array when no name clashes)
 	  */
-	function checkTemplateNameClashes() {
+	public function checkTemplateNameClashes() {
 		$clashes = array();
 
 		foreach ($this->templates as $templateName => $data) {
@@ -292,13 +292,13 @@ class SKINIMPORT {
 	/**
 	 * Called by XML parser for each new start element encountered
 	 */
-	function startElement($parser, $name, $attrs) {
+	public function startElement($parser, $name, $attrs) {
 		foreach($attrs as $key=>$value) {
-		    $attrs[$key]=htmlspecialchars($value,ENT_QUOTES,_CHARSET);
+			$attrs[$key]=htmlspecialchars($value,ENT_QUOTES,_CHARSET);
 		}
 
 		if ($this->debug) {
-		    echo 'START: ', htmlspecialchars($name,ENT_QUOTES,_CHARSET), '<br />';
+			echo 'START: ', htmlspecialchars($name,ENT_QUOTES,_CHARSET), '<br />';
 		}
 
 		switch ($name) {
@@ -353,7 +353,7 @@ class SKINIMPORT {
 	/**
 	  * Called by the XML parser for each closing tag encountered
 	  */
-	function endElement($parser, $name) {
+	public function endElement($parser, $name) {
 		if ($this->debug) {
 			echo 'END: ' . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . '<br />';
 		}
@@ -371,12 +371,12 @@ class SKINIMPORT {
 				$this->info = $this->getCharacterData();
 			case 'skin':
 				if (!$this->inMeta) {
-				    $this->inSkin = 0;
+					$this->inSkin = 0;
 				}
 				break;
 			case 'template':
 				if (!$this->inMeta) {
-				    $this->inTemplate = 0;
+					$this->inTemplate = 0;
 				}
 				break;
 			case 'description':
@@ -404,7 +404,7 @@ class SKINIMPORT {
 	/**
 	 * Called by XML parser for data inside elements
 	 */
-	function characterData ($parser, $data) {
+	public function characterData ($parser, $data) {
 		if ($this->debug) {
 			echo 'NEW DATA: ' . htmlspecialchars($data,ENT_QUOTES,_CHARSET) . '<br />';
 		}
@@ -414,21 +414,22 @@ class SKINIMPORT {
 	/**
 	 * Returns the data collected so far
 	 */
-	function getCharacterData() {
+	public function getCharacterData() {
 		return $this->cdata;
 	}
 
 	/**
 	 * Clears the data buffer
 	 */
-	function clearCharacterData() {
+	public function clearCharacterData() {
 		$this->cdata = '';
 	}
 
 	/**
-	 * Static method that looks for importable XML files in subdirs of the given dir
+	 * method that looks for importable XML files in subdirs of the given dir
+	 * @static
 	 */
-	function searchForCandidates($dir) {
+	public static function searchForCandidates($dir) {
 		$candidates = array();
 
 		$dirhandle = opendir($dir);
@@ -458,14 +459,14 @@ class SKINIMPORT {
 
 class SKINEXPORT {
 
-	var $templates;
-	var $skins;
-	var $info;
+	public $templates;
+	public $skins;
+	public $info;
 
 	/**
 	 * Constructor initializes data structures
 	 */
-	function SKINEXPORT() {
+	public function SKINEXPORT() {
 		// list of templateIDs to export
 		$this->templates = array();
 
@@ -483,9 +484,9 @@ class SKINEXPORT {
 	 *		template ID
 	 * @result false when no such ID exists
 	 */
-	function addTemplate($id) {
+	public function addTemplate($id) {
 		if (!TEMPLATE::existsID($id)) {
-		    return 0;
+			return 0;
 		}
 
 
@@ -501,9 +502,9 @@ class SKINEXPORT {
 	 *		skin ID
 	 * @result false when no such ID exists
 	 */
-	function addSkin($id) {
+	public function addSkin($id) {
 		if (!SKIN::existsID($id)) {
-		    return 0;
+			return 0;
 		}
 
 		$this->skins[$id] = SKIN::getNameFromId($id);
@@ -514,7 +515,7 @@ class SKINEXPORT {
 	/**
 	 * Sets the extra info to be included in the exported file
 	 */
-	function setInfo($info) {
+	public function setInfo($info) {
 		$this->info = $info;
 	}
 
@@ -526,7 +527,7 @@ class SKINEXPORT {
 	 *		set to 0 if you don't want to send out headers
 	 *		(optional, default 1)
 	 */
-	function export($setHeaders = 1) {
+	public function export($setHeaders = 1) {
 		if ($setHeaders) {
 			// make sure the mimetype is correct, and that the data does not show up
 			// in the browser, but gets saved into and XML file (popup download window)
@@ -596,11 +597,9 @@ class SKINEXPORT {
 	/**
 	 * Escapes CDATA content so it can be included in another CDATA section
 	 */
-	function escapeCDATA($cdata)
+	public function escapeCDATA($cdata)
 	{
 		return preg_replace('/]]>/', ']]]]><![CDATA[>', $cdata);
 
 	}
 }
-
-?>

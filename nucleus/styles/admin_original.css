@@ -197,8 +197,8 @@ h1 {
 	border-style: solid;
 	border-color: black;
 	
-	/* rounded borders in gecko-based browsers? why not :) */
-	-moz-border-radius: 10px;	
+	/* rounded borders for all! */
+	border-radius: 10px;
 
 	padding: 10px 10px 0 10px;	
 	

@@ -24,7 +24,7 @@ class COMMENT {
 	  *
 	  * @static
 	  */
-	function getComment($commentid) {
+	public static function getComment($commentid) {
 		$query = 'SELECT `cnumber` AS commentid, `cbody` AS body, `cuser` AS user, `cmail` AS userid, `cemail` AS email, `cmember` AS memberid, `ctime`, `chost` AS host, `mname` AS member, `cip` AS ip, `cblog` AS blogid'
 					. ' FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON `cmember` = `mnumber`'
 					. ' WHERE `cnumber` = ' . intval($commentid);
@@ -44,7 +44,7 @@ class COMMENT {
 	  *
 	  * @static
 	  */
-	function prepare($comment)
+	public static function prepare($comment)
 	{
 		$comment['user'] = strip_tags($comment['user']);
 		$comment['userid'] = strip_tags($comment['userid']);
@@ -61,7 +61,7 @@ class COMMENT {
 			$comment['userid'] = 'http://' . $comment['userid'];
 		} // end if
 
-		$comment['body'] = COMMENT::prepareBody($comment['body']);
+		$comment['body'] = self::prepareBody($comment['body']);
 
 		return $comment;
 	}
@@ -69,9 +69,9 @@ class COMMENT {
 	/**
 	 * Prepares the body of a comment
 	 *
-	 * @ static
+	 * @static
 	 */
-	function prepareBody($body) {
+	public static function prepareBody($body) {
 
 		# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
 		# original ereg_replace: ereg_replace("\n.\n.\n", "\n", $body);
@@ -114,7 +114,7 @@ class COMMENT {
 	 *
 	 * @ static
 	 */
-	function createLinkCode($pre, $url, $protocol = 'http') {
+	public static function createLinkCode($pre, $url, $protocol = 'http') {
 		$post = '';
 
 		// it's possible that $url ends contains entities we don't want,
@@ -170,8 +170,9 @@ class COMMENT {
 	 * This method is a callback for creating link codes
 	 * @param array $match
 	 * @return string
+	 * @static
 	 */
-	function prepareBody_cb($match)
+	public static function prepareBody_cb($match)
 	{
 		if ( !preg_match('/^[a-z]+/i', $match[2], $protocol) )
 		{
@@ -199,5 +200,3 @@ class COMMENT {
 	}
 
 }
-
-?>

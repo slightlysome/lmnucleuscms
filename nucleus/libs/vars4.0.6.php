@@ -149,5 +149,3 @@ function setOldAction($value) {
 	global $HTTP_POST_VARS;
 	$HTTP_POST_VARS['oldaction'] = $value;
 }
-
-?>

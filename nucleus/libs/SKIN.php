@@ -23,15 +23,15 @@ require_once dirname(__FILE__) . '/ACTIONS.php';
 class SKIN {
 
 	// after creating a SKIN object, evaluates to true when the skin exists
-	var $isValid;
+	public $isValid;
 
 	// skin characteristics. Use the getXXX methods rather than accessing directly
-	var $id;
-	var $description;
-	var $contentType;
-	var $includeMode;		// either 'normal' or 'skindir'
-	var $includePrefix;
-	var $name;
+	public $id;
+	public $description;
+	public $contentType;
+	public $includeMode;		// either 'normal' or 'skindir'
+	public $includePrefix;
+	public $name;
 
 	/**
 	 * Constructor for a new SKIN object
@@ -39,7 +39,7 @@ class SKIN {
 	 * @param $id 
 	 * 			id of the skin
 	 */
-	function SKIN($id) {
+	public function SKIN($id) {
 		$this->id = intval($id);
 
 		// read skin name/description/content type
@@ -60,21 +60,21 @@ class SKIN {
 	/**
 	 * Get SKIN id
 	 */
-	function getID() {
+	public function getID() {
 		return $this->id;
 	}
 
 	/**
 	 * Get SKIN name
 	 */
-	function getName() {
+	public function getName() {
 		return $this->name;
 	}
 	
 	/**
 	 * Get SKIN description
 	 */
-	function getDescription() {
+	public function getDescription() {
 		return $this->description;
 	}
 	
@@ -83,7 +83,7 @@ class SKIN {
 	 * 
 	 * e.g. text/xml, text/html, application/atom+xml
 	 */
-	function getContentType() {
+	public function getContentType() {
 		return $this->contentType;
 	}
 	
@@ -94,7 +94,7 @@ class SKIN {
 	 * 'normal': if a all data of the skin can be found in the databse
 	 * 'skindir': if the skin has data in the it's skin driectory
 	 */
-	function getIncludeMode() {
+	public function getIncludeMode() {
 		return $this->includeMode;
 	}
 	
@@ -104,7 +104,7 @@ class SKIN {
 	 * Get name of the subdirectory (with trailing slash) where
 	 * the files of the current skin can be found (e.g. 'default/')
 	 */
-	function getIncludePrefix() {
+	public function getIncludePrefix() {
 		return $this->includePrefix;
 	}
 
@@ -114,7 +114,7 @@ class SKIN {
 	 * @return int number of skins with the given ID
 	 * @static
 	 */
-	function exists($name) {
+	public static function exists($name) {
 		return quickQuery('select count(*) as result FROM '.sql_table('skin_desc').' WHERE sdname="'.sql_real_escape_string($name).'"') > 0;
 	}
 
@@ -124,7 +124,7 @@ class SKIN {
 	 * @return int number of skins with the given ID
 	 * @static
 	 */
-	function existsID($id) {
+	public static function existsID($id) {
 		return quickQuery('select COUNT(*) as result FROM '.sql_table('skin_desc').' WHERE sdnumber='.intval($id)) > 0;
 	}
 
@@ -134,7 +134,7 @@ class SKIN {
 	 * @return object SKIN
 	 * @static
 	 */
-	function createFromName($name) {
+	public static function createFromName($name) {
 		return new SKIN(SKIN::getIdFromName($name));
 	}
 
@@ -144,7 +144,7 @@ class SKIN {
 	 * @return int Skin ID
 	 * @static
 	 */
-	function getIdFromName($name) {
+	public static function getIdFromName($name) {
 		$query =  'SELECT sdnumber'
 			   . ' FROM '.sql_table('skin_desc')
 			   . ' WHERE sdname="'.sql_real_escape_string($name).'"';
@@ -159,7 +159,7 @@ class SKIN {
 	 * @return string Skin short name
 	 * @static
 	 */
-	function getNameFromId($id) {
+	public static function getNameFromId($id) {
 		return quickQuery('SELECT sdname as result FROM '.sql_table('skin_desc').' WHERE sdnumber=' . intval($id));
 	}
 
@@ -168,7 +168,7 @@ class SKIN {
 	 *
 	 * @static
 	 */
-	function createNew($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
+	public static function createNew($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
 		global $manager;
 
 		$data = array(
@@ -201,7 +201,7 @@ class SKIN {
 	 * 
 	 * @param string $type
 	 */
-	function parse($type) {
+	public function parse($type) {
 		global $manager, $CONF;
 
 		$data = array(
@@ -262,7 +262,7 @@ class SKIN {
 	 * 
 	 * @param $type type of the skin (e.g. index, item, search ...)
 	 */
-	function getContent($type) {
+	public function getContent($type) {
 		$query = 'SELECT scontent FROM '.sql_table('skin')." WHERE sdesc=$this->id and stype='". sql_real_escape_string($type) ."'";
 		$res = sql_query($query);
 
@@ -278,7 +278,7 @@ class SKIN {
 	 * @param $type type of the skin part (e.g. index, item, search ...) 
 	 * @param $content new content for this skin part
 	 */
-	function update($type, $content) {
+	public function update($type, $content) {
 		$skinid = $this->id;
 
 		// delete old thingie
@@ -293,14 +293,14 @@ class SKIN {
 	/**
 	 * Deletes all skin parts from the database
 	 */
-	function deleteAllParts() {
+	public function deleteAllParts() {
 		sql_query('DELETE FROM '.sql_table('skin').' WHERE sdesc='.$this->getID());
 	}
 
 	/**
 	 * Updates the general information about the skin
 	 */
-	function updateGeneralInfo($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
+	public function updateGeneralInfo($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
 		$query =  'UPDATE '.sql_table('skin_desc').' SET'
 			   . " sdname='" . sql_real_escape_string($name) . "',"
 			   . " sddesc='" . sql_real_escape_string($desc) . "',"
@@ -314,10 +314,10 @@ class SKIN {
 	/**
 	 * Get an array with the names of possible skin parts
 	 * Used to show all possible parts of a skin in the administration backend
-	 * 
-	 * static: returns an array of friendly names
+	 * returns an array of friendly names
+	 * @static
 	 */
-	function getFriendlyNames() {
+	public static function getFriendlyNames() {
 		$skintypes = array(
 			'index' => _SKIN_PART_MAIN,
 			'item' => _SKIN_PART_ITEM,
@@ -343,8 +343,9 @@ class SKIN {
 	 * returns an array with the allowed actions
 	 * 
 	 * @param $type type of the skin (e.g. index, item, search ...)
+	 * @static
 	 */
-	function getAllowedActionsForType($type) {
+	public static function getAllowedActionsForType($type) {
 		global $blogid;
 
 		// some actions that can be performed at any time, from anywhere
@@ -508,5 +509,3 @@ class SKIN {
 	}
 
 }
-
-?>

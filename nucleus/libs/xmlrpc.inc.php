@@ -598,8 +598,8 @@ $cp1252_to_xmlent =
 				case 'DATETIME.ISO8601':
 				case 'BASE64':
 					$GLOBALS['_xh']['vt']=strtolower($name);
-        			/// @todo: optimization creep - remove the if/elseif cycle below
-                    /// since the case() in which we are already did that
+					/// @todo: optimization creep - remove the if/elseif cycle below
+					/// since the case() in which we are already did that
 					if ($name=='STRING')
 					{
 						$GLOBALS['_xh']['value']=$GLOBALS['_xh']['ac'];
@@ -3641,5 +3641,3 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				return false;
 		}
 	}
-
-?>
