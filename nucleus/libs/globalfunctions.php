@@ -26,8 +26,8 @@ $nucleus['codename'] = '';
 // check and die if someone is trying to override internal globals (when register_globals turn on)
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
 
-$CONF['debug'] = 0;
-if ($CONF['debug']) {
+
+if ( (isset($CONF['debug'])) AND ($CONF['debug']) ) {
     error_reporting(E_ALL); // report all errors!
 } else {
     ini_set('display_errors','0');

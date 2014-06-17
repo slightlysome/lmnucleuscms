@@ -18,7 +18,8 @@
  * @version $Id$
  */
 
-$CONF = array();
+$CONF = array(); // ideally Global Vars and defaults should init in just one location
+$CONF['debug'] = 0;
 require('./config.php');
 
 // common functions
