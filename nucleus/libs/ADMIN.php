@@ -385,10 +385,9 @@ class ADMIN {
         $template['content'] = 'itemlist';
         $template['now'] = $blog->getCorrectTime(time());
 
-        $manager->loadClass("ENCAPSULATE");
-        $navList = new NAVLIST('itemlist', $start, $amount, 0, 1000, $blogid, $search, 0);
-        $navList->showBatchList('item', $query, 'table', $template);
-
+        ADMINMANAGER::instance()
+                ->NAVLIST('itemlist', $start, $amount, 0, 1000, $blogid, $search, 0)
+                ->showBatchList('item', $query, 'table', $template);
 
         $this->pagefoot();
     }
@@ -949,10 +948,10 @@ class ADMIN {
         $template['content'] = 'itemlist';
         $template['now'] = time();
 
-        $manager->loadClass("ENCAPSULATE");
-        $navList = new NAVLIST('browseownitems', $start, $amount, 0, 1000, /*$blogid*/ 0, $search, 0);
-        $navList->showBatchList('item', $query, 'table', $template);
-
+        ADMINMANAGER::instance()
+                ->NAVLIST('browseownitems', $start, $amount, 0, 1000, /*$blogid*/ 0, $search, 0)
+                ->showBatchList('item', $query, 'table', $template);
+        
         $this->pagefoot();
 
     }
@@ -1005,9 +1004,9 @@ class ADMIN {
         $template['content'] = 'commentlist';
         $template['canAddBan'] = $member->blogAdminRights(getBlogIDFromItemID($itemid));
 
-        $manager->loadClass("ENCAPSULATE");
-        $navList = new NAVLIST('itemcommentlist', $start, $amount, 0, 1000, 0, $search, $itemid);
-        $navList->showBatchList('comment', $query, 'table', $template, _NOCOMMENTS);
+        ADMINMANAGER::instance()
+                ->NAVLIST('itemcommentlist', $start, $amount, 0, 1000, 0, $search, $itemid)
+                ->showBatchList('comment', $query, 'table', $template, _NOCOMMENTS);
 
         $this->pagefoot();
     }
@@ -1052,9 +1051,9 @@ class ADMIN {
         $template['content'] = 'commentlist';
         $template['canAddBan'] = 0; // doesn't make sense to allow banning yourself
 
-        $manager->loadClass("ENCAPSULATE");
-        $navList = new NAVLIST('browseowncomments', $start, $amount, 0, 1000, 0, $search, 0);
-        $navList->showBatchList('comment', $query, 'table', $template, _NOCOMMENTS_YOUR);
+        ADMINMANAGER::instance()
+                ->NAVLIST('browseowncomments', $start, $amount, 0, 1000, 0, $search, 0)
+                ->showBatchList('comment', $query, 'table', $template, _NOCOMMENTS_YOUR);
 
         $this->pagefoot();
     }
@@ -1112,15 +1111,17 @@ class ADMIN {
         $template['content'] = 'commentlist';
         $template['canAddBan'] = $member->blogAdminRights($blogid);
 
-        $manager->loadClass("ENCAPSULATE");
-        $navList = new NAVLIST('blogcommentlist', $start, $amount, 0, 1000, $blogid, $search, 0);
-        $navList->showBatchList('comment', $query, 'table', $template, _NOCOMMENTS_BLOG);
+        ADMINMANAGER::instance()
+                ->NAVLIST('blogcommentlist', $start, $amount, 0, 1000, $blogid, $search, 0)
+                ->showBatchList('comment', $query, 'table', $template, _NOCOMMENTS_BLOG);
 
         $this->pagefoot();
     }
 
     /**
      * Provide a page to item a new item to the given blog
+     * 
+     * This method sets two local scope variables that it does nothing with - why?
      */
     function action_createitem() {
         global $member, $manager;
@@ -1130,15 +1131,14 @@ class ADMIN {
         // check if allowed
         $member->teamRights($blogid) or $this->disallow();
 
-        $memberid = $member->getID();
-
-        $blog =& $manager->getBlog($blogid);
+        // does this serve any purpose?
+        $memberid = $member->getID(); // @TODO Find out what is going on her
+        $blog =& $manager->getBlog($blogid); // @TODO Find out what is going on here
 
         $this->pagehead();
 
-        // generate the add-item form
-        $formfactory = new PAGEFACTORY($blogid);
-        $formfactory->createAddForm('admin');
+        // generate the add-item 
+        ADMINMANAGER::instance()->PAGEFACTORY($blogid)->createAddForm('admin');
 
         $this->pagefoot();
     }
@@ -1167,8 +1167,7 @@ class ADMIN {
 
         // form to edit blog items
         $this->pagehead();
-        $formfactory = new PAGEFACTORY($blog->getID());
-        $formfactory->createEditForm('admin',$item);
+        ADMINMANAGER::instance()->PAGEFACTORY($blog->getID())->createEditForm('admin',$item);
         $this->pagefoot();
     }
 
@@ -1731,9 +1730,7 @@ class ADMIN {
         $template['content'] = 'memberlist';
         $template['tabindex'] = 10;
 
-        $manager->loadClass("ENCAPSULATE");
-        $batch = new BATCH('member');
-        $batch->showlist($query,'table',$template);
+        ADMINMANAGER::instance()->BATCH('member')->showlist($query,'table',$template);
 
         echo '<h3>' . _MEMBERS_NEW .'</h3>';
         ?>
@@ -2094,7 +2091,7 @@ class ADMIN {
             $this->error($res);
 
         // fire PostRegister event
-        $newmem = new MEMBER();
+        $newmem = ADMINMANAGER::instance()->MEMBER();
         $newmem->readFromName(postVar('name'));
         $data = array('member' => &$newmem);
         $manager->notify('PostRegister', $data);
@@ -2301,9 +2298,7 @@ class ADMIN {
         $template['content'] = 'teamlist';
         $template['tabindex'] = 10;
 
-        $manager->loadClass("ENCAPSULATE");
-        $batch = new BATCH('team');
-        $batch->showlist($query, 'table', $template);
+        ADMINMANAGER::instance()->BATCH('team')->showlist($query, 'table', $template);
 
         ?>
             <h3><?php echo _TEAM_ADDNEW?></h3>
@@ -2658,9 +2653,7 @@ class ADMIN {
         $template['content'] = 'categorylist';
         $template['tabindex'] = 200;
 
-        $manager->loadClass("ENCAPSULATE");
-        $batch = new BATCH('category');
-        $batch->showlist($query,'table',$template);
+        ADMINMANAGER::instance()->BATCH('category')->showlist($query,'table',$template);
 
         ?>
 

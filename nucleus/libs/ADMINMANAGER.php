@@ -50,6 +50,11 @@ class ADMINMANAGER {
 	private function __construct() {}
         private function __clone() {}
         
+        
+        
+        
+        
+        
         public function set_using_admin_area(){
             // we are using admin stuff:
             $CONF = array();
@@ -138,7 +143,6 @@ class ADMINMANAGER {
         
         protected function &finish_admin($action){
             $admin = $this->ADMIN();
-            $admin->action($action);
             return $admin;
         }    
         
@@ -149,20 +153,50 @@ class ADMINMANAGER {
             return $this->simple_object('ADMIN');
         }
         
+        
+
+        public function &MEMBER(){
+            return $this->force_spare_object('MEMBER');
+        }
+        
+        
+        
+        
+        /**
+         * An index value created when forcing a fresh instance
+         * @return int 
+         */
         public function get_last_id(){
             return $this->last_id;
         }
-        
+        /**
+         * Force a new instance of an object and get the object. Note the value 
+         * of get_last_id if you need to get access later.
+         * @param string $what
+         * @return object 
+         */
         public function &force_spare_object($what){
             $this->objects[$what][] = new $what ();
             $this->last_id = count($this->objects[$what])-1;
             return $this->objects[$what][$this->last_id];
         }
         
+        public function distroy_spare_object($what,$id){
+            unset($this->objects[$what][$id]);
+            return $this;
+        }
+        
         public function &get_spare_by_id($what,$id){
             return $this->objects[$what][$id];
         }
         
+        /**
+         * returns the object requested caching it if one has already been made
+         * to get a new instance of the object use force_spare_object and note 
+         * the value returned by get_last_id if you need access later.
+         * @param string $what
+         * @return object
+         */
         protected function &simple_object($what){
             if(isset($this->objects[$what][0]) && is_object($this->objects[$what][0])){
                 return $this->objects[$what][0];
@@ -171,4 +205,92 @@ class ADMINMANAGER {
                 return $this->objects[$what][0];
             }
         }
+        
+        /**
+         * Returns a PLUGIN object
+         * @param string $name
+         * @return object 
+         */
+        public function &getPlugin($name){
+            return $this->manager()->getPlugin($name);
+        }
+        /**
+         * Returns the member object
+         * @param int $memberid
+         * @return object 
+         */
+        public function &getMember($memberid) {
+            return $this->manager()->getMember($memberid);
+        }
+        /**
+         * Returns the blog object for the given ID
+         * @param int $blogid
+         * @return object 
+         */
+	public function &getBlog($blogid){
+            return $this->manager()->getBlog($blogid);
+        }
+        /**
+         * Returns the item object using permissive defaults on future and draft
+         * status. These can, of course, be set to false 
+         * @param int $itemid
+         * @param bool $allowdraft (true)
+         * @param bool $allowfuture (true)
+         * @return object 
+         */
+        public function &getItem($itemid, $allowdraft=true, $allowfuture=true){
+            return $this->manager()->getItem($itemid, $allowdraft, $allowfuture);
+        } 
+        /**
+         * 
+         * @global string $action
+         * @param string $eventName
+         * @param array $data
+         */    
+        public function adminNotify($eventName, &$data){
+            global $action;
+            $data['action']=$action;
+            $this->manager()->notify($eventName, $data);
+            return $this;
+        } 
+        
+        /**
+         * This is a section for chaining what look like fire and forget classes 
+         */
+        
+        /**
+         * @TODO: Finish documenting this fella.
+         * 
+         * @param string $action
+         * @param int $start
+         * @param int $amount
+         * @param int $minamount
+         * @param int $maxamount
+         * @param int $blogid
+         * @param ??? $search
+         * @param int $itemid
+         * @return \NAVLIST 
+         */
+        public function NAVLIST($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid){
+            $this->manager->loadClass("ENCAPSULATE");
+            return new NAVLIST($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid);
+        }
+        /**
+         * Chain your PAGEFACTORY method directly from this method
+         * @param int $blogid
+         * @return \PAGEFACTORY 
+         */
+        public function PAGEFACTORY($blogid){
+            return new PAGEFACTORY($blogid);
+        }
+        /**
+         * Used to chain in a batch command
+         * @param string $what
+         * @return \BATCH 
+         */
+        public function BATCH($what){
+            $this->manager->loadClass("ENCAPSULATE");
+            return new BATCH($what);
+        }
+        
 }
