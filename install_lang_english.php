@@ -78,6 +78,8 @@ define('_TEXT4_TAB_FIELD2',	'Username');
 define('_TEXT4_TAB_FIELD3',	'Password');
 define('_TEXT4_TAB_FIELD4',	'Database');
 define('_TEXT4_TAB_FIELD4_ADD',	'needs to be created');
+define('_TEXT4_TAB_FIELD5',	'Charset');
+define('_TEXT4_TAB_FIELD6',	'Collate');
 
 define('_TEXT4_TAB2_HEAD',	'Advanced Database Settings');
 define('_TEXT4_TAB2_FIELD',	'Use table prefix');

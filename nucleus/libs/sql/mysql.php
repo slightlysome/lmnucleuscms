@@ -58,10 +58,12 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	  * Connects to mysql server
 	  */
 	function sql_connect() {
-		global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN;
+		global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CHARSET, $MYSQL_CONN;
 
 		$MYSQL_CONN = mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
 		sql_select_db($MYSQL_DATABASE,$MYSQL_CONN) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
+		if (function_exists('mysql_set_charset')) mysql_set_charset($MYSQL_CHARSET, $MYSQL_CONN);
+		else sql_query("SET NAMES '{$MYSQL_CHARSET}'", $MYSQL_CONN);
 
 		return $MYSQL_CONN;
 	}
