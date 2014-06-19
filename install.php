@@ -246,6 +246,14 @@ function showInstallForm() {
 					<td><label for="if_mySQL_database"><?php echo _TEXT4_TAB_FIELD4; ?>:</label></td>
 					<td><input id="if_mySQL_database" name="mySQL_database" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create" /><label for="mySQL_create"><?php echo _TEXT4_TAB_FIELD4_ADD; ?></label>)</td>
 				</tr>
+				<tr>
+					<td><label for="if_mySQL_charset"><?php echo _TEXT4_TAB_FIELD5; ?>:</label></td>
+					<td><input id="if_mySQL_charset" name="mySQL_charset" type="text" value="utf8" /></td>
+				</tr>
+				<tr>
+					<td><label for="if_mySQL_collate"><?php echo _TEXT4_TAB_FIELD6; ?>:</label></td>
+					<td><input id="if_mySQL_collate" name="mySQL_collate" type="text" value="utf8_general_ci" /></td>
+				</tr>
 			</table>
 		</fieldset>
 
@@ -472,6 +480,8 @@ function doInstall() {
 	$mysql_user = postVar('mySQL_user');
 	$mysql_password = postVar('mySQL_password');
 	$mysql_database = postVar('mySQL_database');
+	$mysql_charset = postVar('mySQL_charset');
+	$mysql_collate = postVar('mySQL_collate');
 	$mysql_create = postVar('mySQL_create');
 	$mysql_usePrefix = postVar('mySQL_usePrefix');
 	$mysql_prefix = postVar('mySQL_tablePrefix');
@@ -576,11 +586,16 @@ function doInstall() {
 
 	// 3. try to create database (if needed)
 	if ($mysql_create == 1) {
-		sql_query('CREATE DATABASE ' . $mysql_database,$MYSQL_CONN) or _doError(_ERROR16 . ': ' . sql_error($MYSQL_CONN) );
+		sql_query("CREATE DATABASE `{$mysql_database}` CHARACTER SET '{$mysql_charset}' COLLATE '{$mysql_collate}'",$MYSQL_CONN) or _doError(_ERROR16 . ': ' . sql_error($MYSQL_CONN) );
 	}
 
 	// 4. try to select database
 	sql_select_db($mysql_database,$MYSQL_CONN) or _doError(_ERROR17);
+	sql_query("SET CHARACTER SET '{$mysql_charset}'", $MYSQL_CONN);
+	if (function_exists('mysql_set_charset'))
+		mysql_set_charset($mysql_charset, $MYSQL_CONN);
+	else
+		sql_query("SET NAMES '{$mysql_charset}'", $MYSQL_CONN);
 
 	// 5. execute queries
 	$filename = 'install.sql';
@@ -702,12 +717,13 @@ function doInstall() {
 
 	if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) ) {
 		// 10. set global variables
-		global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_PREFIX;
+		global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CHARSET, $MYSQL_PREFIX;
 
 		$MYSQL_HOST = $mysql_host;
 		$MYSQL_USER = $mysql_user;
 		$MYSQL_PASSWORD = $mysql_password;
 		$MYSQL_DATABASE = $mysql_database;
+		$MYSQL_CHARSET = $mysql_charset;
 		$MYSQL_PREFIX = ($mysql_usePrefix == 1)?$mysql_prefix:'';
 
 		global $DIR_NUCLEUS, $DIR_MEDIA, $DIR_SKINS, $DIR_PLUGINS, $DIR_LANG, $DIR_LIBS;
@@ -755,6 +771,7 @@ function doInstall() {
 		$config_data .= "	\$MYSQL_USER = '" . $mysql_user . "';\n";
 		$config_data .= "	\$MYSQL_PASSWORD = '" . $mysql_password . "';\n";
 		$config_data .= "	\$MYSQL_DATABASE = '" . $mysql_database . "';\n";
+		$config_data .= "	\$MYSQL_CHARSET = '" . $mysql_charset . "';\n";
 		$config_data .= "	\$MYSQL_PREFIX = '" . (($mysql_usePrefix == 1)?$mysql_prefix:'') . "';\n";
 		$config_data .= "	// new in 3.50. first element is db handler, the second is the db driver used by the handler\n";
 		$config_data .= "	// default is \$MYSQL_HANDLER = array('mysql','mysql');\n";
@@ -818,6 +835,7 @@ function doInstall() {
 	$MYSQL_USER = '<b><?php echo $mysql_user?></b>';
 	$MYSQL_PASSWORD = '<i><b>xxxxxxxxxxx</b></i>';
 	$MYSQL_DATABASE = '<b><?php echo $mysql_database?></b>';
+	$MYSQL_CHARSET = '<b><?php echo $mysql_charset?></b>';
 	$MYSQL_PREFIX = '<b><?php echo ($mysql_usePrefix == 1)?$mysql_prefix:''?></b>';
 	
 	// new in 3.50. first element is db handler, the second is the db driver used by the handler
