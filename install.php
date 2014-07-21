@@ -515,7 +515,7 @@ function doInstall() {
 		array_push($errors, _ERROR3);
 	}
 
-	if (($mysql_usePrefix == 1) && (!eregi('^[a-zA-Z0-9_]+$', $mysql_prefix) ) ) {
+	if (($mysql_usePrefix == 1) && (!preg_match('/^[a-zA-Z0-9_]+$/', $mysql_prefix) ) ) {
 		array_push($errors, _ERROR4);
 	}
 
@@ -576,7 +576,7 @@ function doInstall() {
 
 	// 3. try to create database (if needed)
 	if ($mysql_create == 1) {
-		sql_query('CREATE DATABASE ' . $mysql_database,$MYSQL_CONN) or _doError(_ERROR16 . ': ' . sql_error($MYSQL_CONN) );
+		sql_query('CREATE DATABASE ' . "`{$mysql_database}`", $MYSQL_CONN) or _doError(_ERROR16 . ': ' . sql_error($MYSQL_CONN) );
 	}
 
 	// 4. try to select database
@@ -588,7 +588,7 @@ function doInstall() {
 	$queries = fread($fd, filesize($filename) );
 	fclose($fd);
 
-	$queries = split("(;\n|;\r)", $queries);
+	$queries = preg_split("/;\n|;\r/", $queries);
 
 	$aTableNames = array(
 		'nucleus_actionlog',
@@ -1104,7 +1104,7 @@ function _isValidMailAddress($address) {
  * 			name which should be tested	
  */
 function _isValidShortName($name) {
-	if (eregi("^[a-z0-9]+$", $name) ) {
+	if (preg_match("/^[a-zA-Z0-9]+$/", $name) ) {
 		return 1;
 	} else {
 		return 0;
@@ -1121,7 +1121,7 @@ function _isValidShortName($name) {
  * 			name which should be tested	
  */
 function _isValidDisplayName($name) {
-	if (eregi("^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$", $name) ) {
+	if (preg_match("/^[a-zA-Z0-9]+[a-zA-Z0-9 ]*[a-zA-Z0-9]+$/", $name) ) {
 		return 1;
 	} else {
 		return 0;
